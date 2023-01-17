@@ -1,5 +1,5 @@
 {
-  "name": "angularuse",
+  "name": "@volvachev/angularuse",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -12,14 +12,14 @@
   "description": "Collection of essential inject functions for Angular",
   "keywords": [
     "angular",
-    "inject"
+    "inject",
+    "utils"
   ],
   "license": "MIT",
   "author": {
     "name": "Egor Volvachev",
     "email": "axe.onegaimy@gmail.com"
   },
-  "private": true,
   "dependencies": {
     "@angular/animations": "^15.1.0",
     "@angular/common": "^15.1.0",
