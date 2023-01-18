@@ -5,7 +5,8 @@
   "semi": true,
   "bracketSpacing": true,
   "arrowParens": "avoid",
-  "trailingComma": "es5",
+  "trailingComma": "none",
   "bracketSameLine": true,
-  "printWidth": 120
+  "printWidth": 120,
+  "endOfLine": "auto"
 }

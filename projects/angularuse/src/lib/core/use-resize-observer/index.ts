@@ -20,6 +20,6 @@ export function useResizeObserver(options: ResizeObserverOptions = {}): Observab
 export const RESIZE_OBSERVER = new InjectionToken<Observable<ResizeObserverEntry[]>>(
   'Reactive changes of dimensions the Element',
   {
-    factory: useResizeObserver,
+    factory: useResizeObserver
   }
 );

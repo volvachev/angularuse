@@ -37,7 +37,7 @@ const generateDefaultNetworkInformation = (): NetworkInformation => {
     downlinkMax: undefined,
     effectiveType: undefined,
     rtt: undefined,
-    type: 'unknown',
+    type: 'unknown'
   };
 };
 
@@ -69,7 +69,7 @@ export function useNetwork(): Observable<NetworkInformation> {
       effectiveType: connection?.effectiveType,
       rtt: connection?.rtt,
       saveData: connection?.saveData,
-      type: connection?.type,
+      type: connection?.type
     };
   }
 
@@ -80,14 +80,14 @@ export function useNetwork(): Observable<NetworkInformation> {
         map(() => ({
           ...updateNetworkInformation(),
           isOnline: false,
-          offlineAt: Date.now(),
+          offlineAt: Date.now()
         }))
       ),
       fromEvent(window, 'online').pipe(
         map(() => ({
           ...updateNetworkInformation(),
           isOnline: true,
-          onlineAt: Date.now(),
+          onlineAt: Date.now()
         }))
       ),
       defer(() =>
@@ -98,5 +98,5 @@ export function useNetwork(): Observable<NetworkInformation> {
 }
 
 export const NETWORK_INFORMATION = new InjectionToken<Observable<NetworkInformation>>('Reactive Network status.', {
-  factory: useNetwork,
+  factory: useNetwork
 });

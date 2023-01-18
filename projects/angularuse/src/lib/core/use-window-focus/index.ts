@@ -20,5 +20,5 @@ export function useWindowFocus(): Observable<boolean> {
 }
 
 export const WINDOW_IS_FOCUSED = new InjectionToken<Observable<boolean>>('Window is focused', {
-  factory: useWindowFocus,
+  factory: useWindowFocus
 });

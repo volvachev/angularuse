@@ -15,6 +15,9 @@ export function useDocumentVisibility(): Observable<DocumentVisibilityState> {
   );
 }
 
-export const DOCUMENT_IS_VISIBLE = new InjectionToken('Reactively track document.visibilityState', {
-  factory: useDocumentVisibility,
-});
+export const DOCUMENT_IS_VISIBLE = new InjectionToken<Observable<DocumentVisibilityState>>(
+  'Reactively track document.visibilityState',
+  {
+    factory: useDocumentVisibility
+  }
+);

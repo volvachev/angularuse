@@ -18,5 +18,5 @@ export function usePreferredLanguages(): Observable<ReadonlyArray<string>> {
 }
 
 export const PREFERRED_LANGUAGES = new InjectionToken('Reactive Navigator Languages', {
-  factory: usePreferredLanguages,
+  factory: usePreferredLanguages
 });

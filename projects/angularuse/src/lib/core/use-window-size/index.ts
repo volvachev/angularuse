@@ -28,13 +28,13 @@ const getWindowSizes = (includeScrollbar: boolean, window: Window & typeof globa
   if (includeScrollbar) {
     return {
       width: window.innerWidth,
-      height: window.innerHeight,
+      height: window.innerHeight
     };
   }
 
   return {
     width: window.document.documentElement.clientWidth,
-    height: window.document.documentElement.clientHeight,
+    height: window.document.documentElement.clientHeight
   };
 };
 
@@ -46,7 +46,7 @@ export function useWindowSize(options: UseWindowSizeOptions = {}): Observable<Re
     initialWidth = Infinity,
     initialHeight = Infinity,
     listenOrientation = true,
-    includeScrollbar = true,
+    includeScrollbar = true
   } = options;
   const window: (Window & typeof globalThis) | null = inject(DOCUMENT).defaultView;
 
@@ -64,5 +64,5 @@ export function useWindowSize(options: UseWindowSizeOptions = {}): Observable<Re
 }
 
 export const WINDOW_SIZE = new InjectionToken<Observable<Readonly<WindowSize>>>('Reactive window size', {
-  factory: useWindowSize,
+  factory: useWindowSize
 });

@@ -7,7 +7,7 @@ export function insideZone<T>(ngZone: NgZone): MonoTypeOperatorFunction<T> {
       source.subscribe({
         next: value => ngZone.run(() => subscriber.next(value)),
         error: error => ngZone.run(() => subscriber.error(error)),
-        complete: () => ngZone.run(() => subscriber.complete()),
+        complete: () => ngZone.run(() => subscriber.complete())
       })
     );
 }
@@ -23,5 +23,5 @@ const unknownInsideZone = useInsideZone<unknown>;
  * experimental
  */
 export const INSIDE_ZONE = new InjectionToken<MonoTypeOperatorFunction<unknown>>('use inside zone', {
-  factory: unknownInsideZone,
+  factory: unknownInsideZone
 });

@@ -17,5 +17,5 @@ const unknownOutsideZone = useOutsideZone<unknown>;
  * experimental
  */
 export const OUTSIDE_ZONE = new InjectionToken<OutsideZoneType<unknown>>('use outside zone', {
-  factory: unknownOutsideZone,
+  factory: unknownOutsideZone
 });

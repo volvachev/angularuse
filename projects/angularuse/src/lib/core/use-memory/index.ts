@@ -41,5 +41,5 @@ export function useMemory(options: UseMemoryOptions = {}): Observable<MemoryInfo
 }
 
 export const MEMORY_INFO = new InjectionToken<Observable<MemoryInfo | null>>('Reactive Memory Info', {
-  factory: useMemory,
+  factory: useMemory
 });

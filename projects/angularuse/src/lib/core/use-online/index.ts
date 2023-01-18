@@ -7,5 +7,5 @@ export function useOnline(): Observable<boolean> {
 }
 
 export const ONLINE_STATUS = new InjectionToken<Observable<boolean>>('Reactive online state.', {
-  factory: useOnline,
+  factory: useOnline
 });
