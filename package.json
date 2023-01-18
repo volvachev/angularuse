@@ -1,6 +1,6 @@
 {
   "name": "@volvachev/angularuse",
-  "version": "0.0.0",
+  "version": "0.0.2",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -18,10 +18,7 @@
     "utils"
   ],
   "license": "MIT",
-  "author": {
-    "name": "Egor Volvachev",
-    "email": "axe.onegaimy@gmail.com"
-  },
+  "author": "Egor Volvachev <axe.onegaimy@gmail.com>",
   "dependencies": {
     "@angular/animations": "^15.1.0",
     "@angular/common": "^15.1.0",
@@ -64,5 +61,13 @@
   "engines": {
     "node": ">= 16",
     "npm": ">= 8"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/volvachev/angularuse.git"
+  },
+  "bugs": {
+    "url": "https://github.com/volvachev/angularuse/issues"
+  },
+  "homepage": "https://github.com/volvachev/angularuse#readme"
 }
