@@ -1,13 +1,13 @@
-# useWindowFocus
+# useOnline
 
-Reactively track window focus with `window.onfocus` and `window.onblur` events.
+Reactive online state. A wrapper of `useNetwork`.
 
 ## Usage
 
 ```ts
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import { useWindowFocus, WINDOW_IS_FOCUSED } from '@volvachev/angularuse';
+import { useOnline, ONLINE_STATUS } from '@volvachev/angularuse';
 
 @Component({
   selector: 'app-example',
@@ -18,12 +18,12 @@ import { useWindowFocus, WINDOW_IS_FOCUSED } from '@volvachev/angularuse';
   imports: [AsyncPipe],
 })
 export class ExampleComponent {
-  public focus$ = useWindowFocus();
-  public focusFromDI$ = inject(WINDOW_IS_FOCUSED);
+  public isOnline$ = useOnline();
+  public isOnlineFromDI$ = inject(ONLINE_STATUS);
 }
 ```
 
 ```html
-<div> focus from function: {{ focus$ | async }}</div>
-<div> focus from DI: {{ focusFromDI$ | async }}</div>
+<div> is online from function: {{ isOnline$ | async }}</div>
+<div> is online from DI: {{ isOnlineFromDI$ | async }}</div>
 ```

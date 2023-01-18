@@ -1,13 +1,13 @@
-# useWindowFocus
+# useDocumentVisibility
 
-Reactively track window focus with `window.onfocus` and `window.onblur` events.
+Reactively track document.visibilityState
 
 ## Usage
 
 ```ts
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
-import { useWindowFocus, WINDOW_IS_FOCUSED } from '@volvachev/angularuse';
+import { useDocumentVisibility, DOCUMENT_IS_VISIBLE } from '@volvachev/angularuse';
 
 @Component({
   selector: 'app-example',
@@ -18,12 +18,12 @@ import { useWindowFocus, WINDOW_IS_FOCUSED } from '@volvachev/angularuse';
   imports: [AsyncPipe],
 })
 export class ExampleComponent {
-  public focus$ = useWindowFocus();
-  public focusFromDI$ = inject(WINDOW_IS_FOCUSED);
+  public documentVisible$ = useDocumentVisibility();
+  public documentVisibleFromDI$ = inject(DOCUMENT_IS_VISIBLE);
 }
 ```
 
 ```html
-<div> focus from function: {{ focus$ | async }}</div>
-<div> focus from DI: {{ focusFromDI$ | async }}</div>
+<div> document visible from function: {{ documentVisible$ | async }}</div>
+<div> document visible from DI: {{ documentVisibleFromDI$ | async }}</div>
 ```

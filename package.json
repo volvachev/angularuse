@@ -6,8 +6,10 @@
     "start": "ng serve",
     "build": "ng build angularuse",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "lint": "ng lint"
+    "test": "ng test --browsers ChromeHeadless --watch=false",
+    "test:local": "ng test --browsers ChromeHeadless",
+    "lint": "ng lint",
+    "lint:fix": "ng lint --fix"
   },
   "description": "Collection of essential inject functions for Angular",
   "keywords": [
