@@ -31,7 +31,10 @@
             "polyfills": [
               "zone.js",
               "zone.js/testing"
-            ]
+            ],
+            "codeCoverage": true,
+            "browsers": "ChromeHeadless",
+            "karmaConfig": "projects/angularuse/karma.conf.js"
           }
         },
         "lint": {

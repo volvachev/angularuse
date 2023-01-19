@@ -12,12 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js
-      - uses: actions/setup-node@v3
+        uses: actions/setup-node@v3
         with:
           node-version: 16
           cache: "npm"
       - name: Install dependencies
-      - run: npm ci
+        run: npm ci
       # End of setup
       - run: |
           npm run build
@@ -27,4 +27,4 @@ jobs:
         uses: coverallsapp/github-action@master
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          path-to-lcov: ./coverage/common/lcov.info
+          path-to-lcov: ./coverage/angularuse/lcov.info

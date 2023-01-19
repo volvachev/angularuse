@@ -3,6 +3,7 @@
 /tmp
 /out-tsc
 .angular
+/coverage
 # Only exists if Bazel was run
 /bazel-out
 
