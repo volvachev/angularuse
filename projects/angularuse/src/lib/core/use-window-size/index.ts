@@ -1,6 +1,7 @@
-import { concat, defer, EMPTY, fromEvent, iif, map, merge, Observable, of } from 'rxjs';
+import { defer, EMPTY, fromEvent, iif, map, merge, Observable, of } from 'rxjs';
 import { inject, InjectionToken } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { consistentQueue } from '../../shared/utils/consistent-queue';
 
 export interface UseWindowSizeOptions {
   initialWidth?: number;
@@ -54,8 +55,8 @@ export function useWindowSize(options: UseWindowSizeOptions = {}): Observable<Re
     return of({ width: initialWidth, height: initialHeight });
   }
 
-  return concat(
-    defer(() => of(null)),
+  return consistentQueue<Event | null>(
+    () => null,
     merge(
       fromEvent(window, 'resize', { passive: true }),
       defer(() => iif(() => listenOrientation, fromEvent(window, 'orientationchange', { passive: true }), EMPTY))

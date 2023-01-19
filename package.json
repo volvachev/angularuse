@@ -2,8 +2,9 @@
   "name": "@volvachev/angularuse",
   "version": "0.0.3",
   "scripts": {
-    "ng": "ng",
     "start": "ng serve",
+    "postbuild": "node scripts/postbuild.js",
+    "postinstall": "husky install",
     "build": "ng build angularuse",
     "watch": "ng build --watch --configuration development",
     "test": "ng test --browsers ChromeHeadless --watch=false",
@@ -46,21 +47,28 @@
     "@angular-eslint/template-parser": "15.2.0",
     "@angular/cli": "~15.1.1",
     "@angular/compiler-cli": "^15.1.0",
+    "@commitlint/cli": "^17.4.2",
+    "@commitlint/config-conventional": "^17.4.2",
+    "@prettier/plugin-xml": "^2.2.0",
     "@types/jasmine": "~4.3.0",
     "@typescript-eslint/eslint-plugin": "5.48.1",
     "@typescript-eslint/parser": "5.48.1",
+    "coveralls": "^3.1.1",
     "eslint": "^8.31.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
+    "husky": "^8.0.3",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.1.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.0.0",
+    "lint-staged": "^13.1.0",
     "ng-packagr": "^15.1.0",
     "prettier": "^2.8.3",
     "prettier-eslint": "^15.0.1",
+    "prettier-plugin-organize-attributes": "^0.0.5",
     "standard-version": "^9.5.0",
     "typescript": "~4.9.4"
   },
@@ -68,17 +76,22 @@
     "node": ">= 16",
     "npm": ">= 8"
   },
+  "lint-staged": {
+    "*.{js,ts,html,md,less,json}": [
+      "prettier --write",
+      "git add"
+    ],
+    "*.{js,ts}": [
+      "npm run lint:fix",
+      "git add"
+    ]
+  },
   "standard-version": {
     "scripts": {
       "postbump": "node scripts/syncVersions.js && git add **/package.json"
     }
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/volvachev/angularuse.git"
-  },
-  "bugs": {
-    "url": "https://github.com/volvachev/angularuse/issues"
-  },
+  "repository": "https://github.com/volvachev/angularuse",
+  "bugs": "https://github.com/volvachev/angularuse/issues",
   "homepage": "https://github.com/volvachev/angularuse#readme"
 }
