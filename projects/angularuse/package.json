@@ -8,5 +8,16 @@
     "dependencies": {
         "tslib": "^2.3.0"
     },
-    "sideEffects": false
+    "sideEffects": false,
+    "description": "Collection of essential inject functions for Angular",
+    "keywords": [
+        "angular",
+        "inject",
+        "utils"
+    ],
+    "license": "MIT",
+    "author": "Egor Volvachev <axe.onegaimy@gmail.com>",
+    "repository": "https://github.com/volvachev/angularuse",
+    "bugs": "https://github.com/volvachev/angularuse/issues",
+    "homepage": "https://github.com/volvachev/angularuse#readme"
 }
