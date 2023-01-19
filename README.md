@@ -20,4 +20,5 @@ Collection of essential Angular inject functions
 - [useMemory](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-memory/index.md) - reactive Memory Info;
 - [useMediaQuery](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-media-query/index.md) - reactive [Media Query](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries);
 - [useInsideZone](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-inside-zone/index.md) and `insideZone` - RxJs operator, that run subscription function inside `NgZone`;
-- [useBattery](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-battery/index.md) - reactive Battery Status API.
+- [useBattery](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-battery/index.md) - reactive Battery Status API;
+- [useUntilDestroy](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-until-destroy/index.md) - RxJs operator, which automatically unsubscribes from the `Observable` on hook `OnDestroy`.
