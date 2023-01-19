@@ -1,6 +1,7 @@
-import { concat, defer, EMPTY, fromEvent, iif, map, merge, Observable, of } from 'rxjs';
+import { defer, EMPTY, fromEvent, iif, map, merge, Observable, of } from 'rxjs';
 import { inject, InjectionToken } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { consistentQueue } from '../../shared/utils/consistent-queue';
 
 interface HasEventTargetAddRemove<E> {
   addEventListener(
@@ -73,8 +74,8 @@ export function useNetwork(): Observable<NetworkInformation> {
     };
   }
 
-  return concat(
-    defer(() => of(updateNetworkInformation())),
+  return consistentQueue(
+    updateNetworkInformation,
     merge(
       fromEvent(window, 'offline').pipe(
         map(() => ({

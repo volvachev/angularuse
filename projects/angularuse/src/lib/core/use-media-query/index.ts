@@ -1,6 +1,10 @@
-import { concat, defer, fromEvent, map, Observable, of } from 'rxjs';
+import { fromEvent, map, Observable, of } from 'rxjs';
 import { inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { consistentQueue } from '../../shared/utils/consistent-queue';
+
+const getMatches = (mediaQuery: Pick<MediaQueryList, 'matches'>): boolean => mediaQuery.matches;
+const getMediaQuery = (mediaQuery: MediaQueryList) => (): boolean => getMatches(mediaQuery);
 
 export function useMediaQuery(query: string): Observable<boolean> {
   const window: (Window & typeof globalThis) | null = inject(DOCUMENT).defaultView;
@@ -11,8 +15,8 @@ export function useMediaQuery(query: string): Observable<boolean> {
 
   const mediaQuery = window!.matchMedia(query);
 
-  return concat(
-    defer(() => of(mediaQuery.matches)),
-    fromEvent(mediaQuery, 'change').pipe(map(event => (event as MediaQueryListEvent).matches))
+  return consistentQueue(
+    getMediaQuery(mediaQuery),
+    fromEvent(mediaQuery, 'change').pipe(map(event => getMatches(event as MediaQueryListEvent)))
   );
 }

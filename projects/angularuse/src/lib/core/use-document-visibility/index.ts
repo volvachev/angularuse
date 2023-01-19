@@ -1,6 +1,9 @@
 import { inject, InjectionToken } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
-import { concat, defer, fromEvent, map, Observable, of } from 'rxjs';
+import { fromEvent, map, Observable, of } from 'rxjs';
+import { consistentQueue } from '../../shared/utils/consistent-queue';
+
+const getDocumentVisibilityState = (document: Document) => (): DocumentVisibilityState => document.visibilityState;
 
 export function useDocumentVisibility(): Observable<DocumentVisibilityState> {
   const document: Document = inject(DOCUMENT);
@@ -9,9 +12,11 @@ export function useDocumentVisibility(): Observable<DocumentVisibilityState> {
     return of('visible');
   }
 
-  return concat(
-    defer(() => of(document.visibilityState)),
-    fromEvent(document, 'visibilitychange', { passive: true }).pipe(map(() => document.visibilityState))
+  const getVisibilityState = getDocumentVisibilityState(document);
+
+  return consistentQueue(
+    getVisibilityState,
+    fromEvent(document, 'visibilitychange', { passive: true }).pipe(map(getVisibilityState))
   );
 }
 
