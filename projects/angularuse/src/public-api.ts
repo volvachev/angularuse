@@ -15,3 +15,4 @@ export * from './lib/core/use-resize-observer';
 export * from './lib/core/use-inside-zone';
 export * from './lib/core/use-battery';
 export * from './lib/core/use-until-destroy';
+export * from './lib/core/use-text-selection';
