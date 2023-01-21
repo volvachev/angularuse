@@ -1,6 +1,6 @@
 {
   "name": "@volvachev/angularuse",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "scripts": {
     "start": "ng serve",
     "postbuild": "node scripts/postbuild.js",
