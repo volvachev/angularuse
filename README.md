@@ -23,4 +23,5 @@ Collection of essential Angular inject functions
 - [useBattery](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-battery/index.md) - reactive Battery Status API;
 - [useUntilDestroy](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-until-destroy/index.md) - RxJs operator, which automatically unsubscribes from the `Observable` on hook `OnDestroy`;
 - [useTextSelection](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-text-selection/index.md) - reactively track user text selection based on `Window.getSelection`;
-- [useWindowScroll](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-window-scroll/index.md) - reactive window scroll.
+- [useWindowScroll](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-window-scroll/index.md) - reactive window scroll;
+- [useElementBounding](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-element-bounding/index.md) - Reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) of an HTML element;
