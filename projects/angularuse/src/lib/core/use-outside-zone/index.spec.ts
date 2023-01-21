@@ -150,7 +150,7 @@ describe('useOutsideZone function', () => {
 });
 
 @Component({
-  selector: 'angularuse-component',
+  selector: 'use-component',
   template: ''
 })
 class TestComponent {
@@ -164,7 +164,7 @@ class TestComponent {
 }
 
 @Component({
-  selector: 'angularuse-component',
+  selector: 'use-component',
   template: ''
 })
 class TestUseOutsideZoneComponent {

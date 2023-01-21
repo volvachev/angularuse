@@ -41,7 +41,7 @@ describe('DOCUMENT_IS_VISIBLE token', () => {
 });
 
 @Component({
-  selector: 'angularuse-component',
+  selector: 'use-component',
   template: ''
 })
 class TestDocumentVisibleComponent {
