@@ -1,8 +1,12 @@
 import { map, mergeMap, Observable } from 'rxjs';
 import { ElementRef, inject } from '@angular/core';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
-import { ElementSize } from './index';
 import { _useResizeObserver } from '../use-resize-observer/internal';
+
+export interface ElementSize {
+  width: number;
+  height: number;
+}
 
 type UseElementSizeFunction = (initialSize?: ElementSize, options?: ResizeObserverOptions) => Observable<ElementSize>;
 

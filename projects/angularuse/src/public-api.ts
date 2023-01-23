@@ -19,8 +19,10 @@ export * from './lib/core/use-text-selection';
 export * from './lib/core/use-window-scroll';
 export * from './lib/core/use-element-bounding';
 export * from './lib/core/use-element-size';
+export * from './lib/core/use-element-visibility';
 
 // Directives
 export * from './lib/core/use-element-bounding/directive';
 export * from './lib/core/use-resize-observer/directive';
 export * from './lib/core/use-element-size/directive';
+export * from './lib/core/use-element-visibility/directive';

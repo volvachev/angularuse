@@ -14,15 +14,18 @@ Collection of essential Angular inject functions
 - [useWindowFocus](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-window-focus/index.md) - reactively track window focus with `window.onfocus` and `window.onblur` events;
 - [useResizeObserver](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-resize-observer/index.md) - reports changes to the dimensions of an Element's content or the border-box;
 - [usePreferredLanguages](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-preferred-languages/index.md) - reactive [Navigator Languages](https://developer.mozilla.org/en-US/docs/Web/API/NavigatorLanguage/languages). It provides web developers with information about the user's preferred languages.
-- [useOutsideZone](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-outside-zone/index.md) and `outsideZone` - RxJs operator, that run subscription function outside `NgZone`
 - [useOnline](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-online/index.md) - reactive online state. A wrapper of `useNetwork`;
 - [useNetwork](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-network/index.md) - reactive [Network status](https://developer.mozilla.org/en-US/docs/Web/API/Network_Information_API). The Network Information API provides information about the system's connection in terms of general connection type (e.g., 'wifi', 'cellular', etc.);
 - [useMemory](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-memory/index.md) - reactive Memory Info;
 - [useMediaQuery](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-media-query/index.md) - reactive [Media Query](https://developer.mozilla.org/en-US/docs/Web/CSS/Media_Queries/Testing_media_queries);
-- [useInsideZone](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-inside-zone/index.md) and `insideZone` - RxJs operator, that run subscription function inside `NgZone`;
 - [useBattery](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-battery/index.md) - reactive Battery Status API;
-- [useUntilDestroy](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-until-destroy/index.md) - RxJs operator, which automatically unsubscribes from the `Observable` on hook `OnDestroy`;
 - [useTextSelection](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-text-selection/index.md) - reactively track user text selection based on `Window.getSelection`;
 - [useWindowScroll](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-window-scroll/index.md) - reactive window scroll;
 - [useElementBounding](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-element-bounding/index.md) - Reactive [bounding box](https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect) of an HTML element;
 - [useElementSize](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-element-size/index.md) - Reactive size of an HTML element. [ResizeObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/ResizeObserver);
+- [useElementVisibility](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-element-visibility/index.md) - Tracks the visibility of an element within the viewport;
+
+### inject rxjs functions
+- [useInsideZone](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-inside-zone/index.md) and `insideZone` - RxJs operator, that run subscription function inside `NgZone`;
+- [useOutsideZone](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-outside-zone/index.md) and `outsideZone` - RxJs operator, that run subscription function outside `NgZone`;
+- [useUntilDestroy](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-until-destroy/index.md) - RxJs operator, which automatically unsubscribes from the `Observable` on hook `OnDestroy`;
