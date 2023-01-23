@@ -21,3 +21,4 @@ export * from './lib/core/use-element-bounding';
 
 // Directives
 export * from './lib/core/use-element-bounding/directive';
+export * from './lib/core/use-resize-observer/directive';
