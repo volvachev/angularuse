@@ -1,8 +1,8 @@
 import { ElementRef, inject, InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
-import { resizeObserver } from './internal';
+import { resizeObserver, UseResizeObserverOptions } from './internal';
 
-export function useResizeObserver(options: ResizeObserverOptions = {}): Observable<ResizeObserverEntry[]> {
+export function useResizeObserver(options: UseResizeObserverOptions = {}): Observable<ResizeObserverEntry[]> {
   const target = inject(ElementRef).nativeElement as HTMLElement;
 
   return resizeObserver(target, options);

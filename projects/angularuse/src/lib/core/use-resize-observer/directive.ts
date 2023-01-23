@@ -1,11 +1,11 @@
 import { AfterViewInit, Directive, EventEmitter, Input, Output } from '@angular/core';
-import { _useResizeObserver } from './internal';
+import { _useResizeObserver, UseResizeObserverOptions } from './internal';
 import { useUntilDestroy } from '../use-until-destroy';
 import { withZone } from '../../shared/utils/with-zone';
 import { mergeMap } from 'rxjs';
 
 export interface ResizeObserverSettings {
-  resizeSettings?: ResizeObserverOptions;
+  resizeSettings?: UseResizeObserverOptions;
   insideNgZone?: boolean;
 }
 

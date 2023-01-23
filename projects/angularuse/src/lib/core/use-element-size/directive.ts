@@ -3,9 +3,10 @@ import { _useElementSize } from './internal';
 import { useUntilDestroy } from '../use-until-destroy';
 import { ElementSize } from './index';
 import { withZone } from '../../shared/utils/with-zone';
+import { UseResizeObserverOptions } from '../use-resize-observer/internal';
 
 export interface ElementSizeSettings {
-  resizeSettings?: ResizeObserverOptions;
+  resizeSettings?: UseResizeObserverOptions;
   initialSize?: ElementSize;
   insideNgZone?: boolean;
 }

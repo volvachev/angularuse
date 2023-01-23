@@ -1,24 +1,30 @@
 import { map, mergeMap, Observable } from 'rxjs';
 import { ElementRef, inject } from '@angular/core';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
-import { _useResizeObserver } from '../use-resize-observer/internal';
+import { _useResizeObserver, UseResizeObserverOptions } from '../use-resize-observer/internal';
 
 export interface ElementSize {
   width: number;
   height: number;
 }
 
-type UseElementSizeFunction = (initialSize?: ElementSize, options?: ResizeObserverOptions) => Observable<ElementSize>;
+type UseElementSizeFunction = (
+  initialSize?: ElementSize,
+  options?: UseResizeObserverOptions
+) => Observable<ElementSize>;
 
 export function elementSize(
   element: HTMLElement,
   useResizeObserver: ReturnType<typeof _useResizeObserver>,
   initialSize: ElementSize = { width: 0, height: 0 },
-  options: ResizeObserverOptions = {}
+  options: UseResizeObserverOptions = {}
 ): Observable<ElementSize> {
-  const { box = 'content-box' } = options;
+  const { box = 'content-box' } = options?.resizeObserverOptions ?? {};
   const resize$ = useResizeObserver({
-    box
+    resizeObserverOptions: {
+      box
+    },
+    debounceTime: options?.debounceTime
   }).pipe(
     mergeMap((entry: ResizeObserverEntry[]) => entry),
     map(({ contentBoxSize, borderBoxSize, devicePixelContentBoxSize, contentRect }: ResizeObserverEntry) => {
@@ -57,7 +63,7 @@ export function _useElementSize(): UseElementSizeFunction {
 
   return (
     initialSize: ElementSize = { width: 0, height: 0 },
-    options: ResizeObserverOptions = {}
+    options: UseResizeObserverOptions = {}
   ): Observable<ElementSize> => {
     return elementSize(element, useResizeObserver, initialSize, options);
   };
