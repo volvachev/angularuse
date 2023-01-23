@@ -19,11 +19,11 @@ import { useResizeObserver, useInsideZone, RESIZE_OBSERVER } from '@volvachev/an
   imports: [AsyncPipe],
 })
 export class ExampleComponent {
-  public elementSizes$ = useResizeObserver().pipe(
+  public resizeObserver$ = useResizeObserver().pipe(
     map(entry => entry[0]),
     useInsideZone(),
   );
-  public elementSizesFromDI$ = inject(RESIZE_OBSERVER).pipe(
+  public resizeObserverFromDI$ = inject(RESIZE_OBSERVER).pipe(
     map(entry => entry[0]),
     useInsideZone(),
   );
@@ -32,5 +32,5 @@ export class ExampleComponent {
 
 ```html
 <div> element size from function: {{ (resizeObserver$ | async)?.contentRect?.width }}</div>
-<div> element size from DI: {{ (resizeObserver$ | async)?.contentRect?.width }}</div>
+<div> element size from DI: {{ (resizeObserverFromDI$ | async)?.contentRect?.width }}</div>
 ```

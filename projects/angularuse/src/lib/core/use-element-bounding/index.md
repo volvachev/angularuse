@@ -32,33 +32,61 @@ export class ExampleComponent {
 
 ### Directive example
 
-The directive has 3 attributes for settings.
-
-| State            | Type                             | Description                   | Default behavior |
-|------------------|----------------------------------|-------------------------------|------------------|
-| withWindowResize | `string` value `true` or `false` | Listen to window resize event | off              |
-| withWindowScroll | `string` value `true` or `false` | Listen to window scroll event | off              |
-| withNgZone       | `string` value `true` or `false` | Run listeners inside zone     | off              |
-
+Emits `DOMRect` object.
 
 ```ts
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { AsyncPipe, JsonPipe } from '@angular/common';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { UseElementBoundingDirective, UseElementBounding } from '@volvachev/angularuse';
 
 @Component({
   selector: 'app-example',
   template: `
-      <div withNgZone="true" withWindowScroll withWindowResize="false" (useElementBounding)="boundingHandler($event)"></div>
+     <div style="width: 300px;height: 300px;border: 1px solid black;" [useElementBoundingSettings]="{insideNgZone: false}" (useElementBounding)="listenUseElementBounding($event)">test</div>
   `,
-  styleUrls: [ './example.component.scss' ],
+  styles: [':host {display: flex; max-width: 310px; height: 310px; background: aquamarine;}'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
   imports: [UseElementBoundingDirective],
 })
 export class ExampleComponent {
-  public boundingHandler(event: UseElementBounding): void {
-    console.log('event', event);
+  public listenUseElementBounding(event: UseElementBounding): void {
+    console.log(event);
   }
 }
+```
+
+### Host directive example
+
+Emits `DOMRect` object.
+
+```ts
+import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
+import { UseElementBoundingDirective, UseElementBounding } from '@volvachev/angularuse';
+
+@Component({
+  selector: 'app-example',
+  template: `
+      <div style="width: 300px;height: 300px;border: 1px solid black;">example</div>
+  `,
+  styles: [':host {display: flex; max-width: 310px; height: 310px; background: aquamarine;}'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  hostDirectives: [
+    {
+      directive: UseElementBoundingDirective,
+      inputs: ['useElementBoundingSettings'],
+      outputs: ['useElementBounding'],
+    },
+  ]
+})
+export class ExampleComponent {
+  @HostListener('useElementBounding', ['$event'])
+  public listenUseElementBounding(event: UseElementBounding) {
+    console.log(event);
+  }
+}
+```
+
+```html
+<app-example [useElementBoundingSettings]="{insideNgZone: false}" (useElementBounding)="listenUseElementSize($event)"></app-example>
 ```
