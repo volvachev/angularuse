@@ -2,6 +2,7 @@ import { Observable } from 'rxjs';
 import { inject, InjectionToken, NgZone } from '@angular/core';
 
 type OutsideZoneType<T> = (source: Observable<T>) => Observable<T>;
+
 export function outsideZone<T>(zone: NgZone): OutsideZoneType<T> {
   return source => new Observable(subscriber => zone.runOutsideAngular(() => source.subscribe(subscriber)));
 }

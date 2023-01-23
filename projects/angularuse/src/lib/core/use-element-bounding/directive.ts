@@ -1,9 +1,12 @@
-import { Attribute, Directive, Output } from '@angular/core';
-import { useElementBounding, UseElementBoundingOptions } from '.';
-import { Observable, skip } from 'rxjs';
-import { useOutsideZone } from '../use-outside-zone';
-import { useInsideZone } from '../use-inside-zone';
-import { isStringBooleanAttribute, StringBooleanAttribute } from '../../shared/utils/is-string-boolean-attribute';
+import { AfterViewInit, Directive, EventEmitter, Input, Output } from '@angular/core';
+import { withZone } from '../../shared/utils/with-zone';
+import { useUntilDestroy } from '../use-until-destroy';
+import { _useElementBounding, UseElementBounding, UseElementBoundingOptions } from './internal';
+
+export interface ElementBoundingSettings {
+  boundingSettings?: UseElementBoundingOptions;
+  insideNgZone?: boolean;
+}
 
 /*
  * experimental
@@ -12,33 +15,28 @@ import { isStringBooleanAttribute, StringBooleanAttribute } from '../../shared/u
   selector: '[useElementBounding]',
   standalone: true
 })
-export class UseElementBoundingDirective {
+export class UseElementBoundingDirective implements AfterViewInit {
+  private readonly _useElementBounding = _useElementBounding();
+  private readonly destroy$ = useUntilDestroy<UseElementBounding>();
+  private readonly zoneTrigger = withZone<UseElementBounding>();
+
+  @Input()
+  public useElementBoundingSettings: ElementBoundingSettings = {
+    insideNgZone: true
+  };
+
   @Output()
-  public readonly useElementBounding = useElementBounding(this.prepareOptions()).pipe(this.withZone(), skip(1));
+  public readonly useElementBounding = new EventEmitter<UseElementBounding>();
 
-  constructor(
-    @Attribute('withWindowResize') public withWindowResize: StringBooleanAttribute,
-    @Attribute('withWindowScroll') public withWindowScroll: StringBooleanAttribute,
-    @Attribute('withNgZone') public withNgZone: StringBooleanAttribute
-  ) {}
-
-  private prepareOptions(): UseElementBoundingOptions {
-    return {
-      windowScroll: isStringBooleanAttribute(this.withWindowScroll),
-      windowResize: isStringBooleanAttribute(this.withWindowResize)
-    };
+  private get isInsideNgZone(): boolean {
+    return this.useElementBoundingSettings?.insideNgZone ?? true;
   }
 
-  private withZone<T>(): (source: Observable<T>) => Observable<T> {
-    const outsideZone$ = useOutsideZone<T>();
-    const insideZone$ = useInsideZone<T>();
-
-    return source => {
-      if (isStringBooleanAttribute(this.withNgZone)) {
-        return source.pipe(insideZone$);
-      }
-
-      return source.pipe(outsideZone$);
-    };
+  public ngAfterViewInit(): void {
+    this._useElementBounding(this.useElementBoundingSettings.boundingSettings)
+      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy$)
+      .subscribe((elementSize: UseElementBounding) => {
+        this.useElementBounding.emit(elementSize);
+      });
   }
 }
