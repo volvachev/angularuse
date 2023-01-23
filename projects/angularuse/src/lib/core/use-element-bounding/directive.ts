@@ -1,9 +1,8 @@
 import { Attribute, Directive, Output } from '@angular/core';
 import { useElementBounding, UseElementBoundingOptions } from '.';
-import { Observable, skip } from 'rxjs';
-import { useOutsideZone } from '../use-outside-zone';
-import { useInsideZone } from '../use-inside-zone';
+import { skip } from 'rxjs';
 import { isStringBooleanAttribute, StringBooleanAttribute } from '../../shared/utils/is-string-boolean-attribute';
+import { withZone } from '../../shared/utils/with-zone';
 
 /*
  * experimental
@@ -14,7 +13,10 @@ import { isStringBooleanAttribute, StringBooleanAttribute } from '../../shared/u
 })
 export class UseElementBoundingDirective {
   @Output()
-  public readonly useElementBounding = useElementBounding(this.prepareOptions()).pipe(this.withZone(), skip(1));
+  public readonly useElementBounding = useElementBounding(this.prepareOptions()).pipe(
+    withZone()(isStringBooleanAttribute(this.withNgZone)),
+    skip(1)
+  );
 
   constructor(
     @Attribute('withWindowResize') public withWindowResize: StringBooleanAttribute,
@@ -26,19 +28,6 @@ export class UseElementBoundingDirective {
     return {
       windowScroll: isStringBooleanAttribute(this.withWindowScroll),
       windowResize: isStringBooleanAttribute(this.withWindowResize)
-    };
-  }
-
-  private withZone<T>(): (source: Observable<T>) => Observable<T> {
-    const outsideZone$ = useOutsideZone<T>();
-    const insideZone$ = useInsideZone<T>();
-
-    return source => {
-      if (isStringBooleanAttribute(this.withNgZone)) {
-        return source.pipe(insideZone$);
-      }
-
-      return source.pipe(outsideZone$);
     };
   }
 }

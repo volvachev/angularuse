@@ -18,7 +18,9 @@ export * from './lib/core/use-until-destroy';
 export * from './lib/core/use-text-selection';
 export * from './lib/core/use-window-scroll';
 export * from './lib/core/use-element-bounding';
+export * from './lib/core/use-element-size';
 
 // Directives
 export * from './lib/core/use-element-bounding/directive';
 export * from './lib/core/use-resize-observer/directive';
+export * from './lib/core/use-element-size/directive';
