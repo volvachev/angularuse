@@ -26,6 +26,7 @@ Collection of essential Angular inject functions
 - [useElementVisibility](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-element-visibility/index.md) - Tracks the visibility of an element within the viewport;
 - [useActiveElement](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-active-element/index.md) - Reactive `document.activeElement`;
 - [useFocus](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-focus/index.md) - Reactive utility to track the focus state of a DOM element;
+- [useFocusWithin](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-focus-within/index.md) - Reactive utility to track if an element or one of its decendants has focus. It is meant to match the behavior of the `:focus-within` CSS pseudo-class;
 
 ### inject rxjs functions
 - [useInsideZone](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-inside-zone/index.md) and `insideZone` - RxJs operator, that run subscription function inside `NgZone`;
