@@ -1,4 +1,4 @@
-import { debounceTime as debounceTimeOperator, Observable } from 'rxjs';
+import { debounceTime as debounceTimeOperator, filter, finalize, map, Observable, Subject } from 'rxjs';
 import { ElementRef, inject } from '@angular/core';
 
 type UseResizeObserverFunction = (options?: UseResizeObserverOptions) => Observable<ResizeObserverEntry[]>;
@@ -8,21 +8,27 @@ export interface UseResizeObserverOptions {
   debounceTime?: number;
 }
 
+// internal stream for sharing a single resizeObserver instance
+const streamResizeObserver = new Subject<ResizeObserverEntry[]>();
+
+const internalResizeObserver = new ResizeObserver(entries => {
+  streamResizeObserver.next(entries);
+});
+
 export function resizeObserver(
   target: HTMLElement,
   options: UseResizeObserverOptions = {}
 ): Observable<ResizeObserverEntry[]> {
-  return new Observable<ResizeObserverEntry[]>(subscriber => {
-    const ro = new ResizeObserver(entries => {
-      subscriber.next(entries);
-    });
+  internalResizeObserver.observe(target, options?.resizeObserverOptions);
 
-    ro.observe(target, options?.resizeObserverOptions);
-
-    return function unsubscribe(): void {
-      ro.disconnect();
-    };
-  }).pipe(debounceTimeOperator(options?.debounceTime ?? 0));
+  return streamResizeObserver.asObservable().pipe(
+    map(entries => entries.filter(entry => entry.target === target)),
+    filter(entries => entries.length > 0),
+    debounceTimeOperator(options?.debounceTime ?? 0),
+    finalize(() => {
+      internalResizeObserver.unobserve(target);
+    })
+  );
 }
 
 /*
