@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.7](https://github.com/volvachev/angularuse/compare/v0.0.6...v0.0.7) (2023-01-27)
+
+
+### Features
+
+* add `useFocus`, `useActiveElement` inject functions ([#5](https://github.com/volvachev/angularuse/issues/5)) ([83dc69b](https://github.com/volvachev/angularuse/commit/83dc69b62d8244cf250190ca61e457a85a34dbbb))
+
 ### 0.0.6 (2023-01-23)
 
 
