@@ -7,7 +7,7 @@
 
 Collection of essential Angular inject functions
 
-## inject functions
+## inject functions and directives
 
 - [useDocumentVisibility](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-document-visibility/index.md) - reactively track `document.visibilityState`;
 - [useWindowSize](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-window-size/index.md) - reactive window size;
@@ -27,6 +27,12 @@ Collection of essential Angular inject functions
 - [useActiveElement](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-active-element/index.md) - Reactive `document.activeElement`;
 - [useFocus](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-focus/index.md) - Reactive utility to track the focus state of a DOM element;
 - [useFocusWithin](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-focus-within/index.md) - Reactive utility to track if an element or one of its decendants has focus. It is meant to match the behavior of the `:focus-within` CSS pseudo-class;
+- [useFavicon](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-favicon/index.md) - Reactive favicon;
+- [useTextareaAutosize](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-textarea-autosize/index.md) - Automatically update the height of a textarea depending on the content;
+- [useMutationObserver](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-mutation-observer/index.md) - Watch for changes being made to the DOM tree. [MutationObserver MDN](https://developer.mozilla.org/en-US/docs/Web/API/MutationObserver);
+- [useTextDirection](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-text-direction/index.md) - Reactive [dir](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir) of the element's text;
+- [useIntersectionObserver](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-intersection-observer/index.md) - Detects that a target element's visibility;
+- [useIdle](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-idle/index.md) - Tracks whether the user is being inactive;
 
 ### inject rxjs functions
 - [useInsideZone](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-inside-zone/index.md) and `insideZone` - RxJs operator, that run subscription function inside `NgZone`;

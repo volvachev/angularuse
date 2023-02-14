@@ -23,6 +23,12 @@ export * from './lib/core/use-element-visibility';
 export * from './lib/core/use-active-element';
 export * from './lib/core/use-focus';
 export * from './lib/core/use-focus-within';
+export * from './lib/core/use-favicon';
+export * from './lib/core/use-textarea-autosize';
+export * from './lib/core/use-mutation-observer';
+export * from './lib/core/use-text-direction';
+export * from './lib/core/use-intersection-observer';
+export * from './lib/core/use-idle';
 
 // Directives
 export * from './lib/core/use-element-bounding/directive';
@@ -30,4 +36,9 @@ export * from './lib/core/use-resize-observer/directive';
 export * from './lib/core/use-element-size/directive';
 export * from './lib/core/use-element-visibility/directive';
 export * from './lib/core/use-focus/directive';
-export * from './lib/core/use-focus-within/directive';
+export * from './lib/core/use-favicon/directive';
+export * from './lib/core/use-textarea-autosize/directive';
+export * from './lib/core/use-mutation-observer/directive';
+export * from './lib/core/use-text-direction/directive';
+export * from './lib/core/use-intersection-observer/directive';
+export * from './lib/core/use-idle/directive';
