@@ -16,9 +16,7 @@ interface TextAreaAutoSizeParams {
 }
 
 export function textareaAutosize(
-  {
-   textarea, renderer, resize$
-  }: TextAreaAutoSizeParams,
+  { textarea, renderer, resize$ }: TextAreaAutoSizeParams,
   options?: UseTextareaAutosizeOptions
 ): Observable<void> {
   function triggerResize() {
@@ -32,11 +30,10 @@ export function textareaAutosize(
 
   const controlValue$ = options?.input ? valueChanges(options?.input) : EMPTY;
 
-  return merge(controlValue$, resize$)
-    .pipe(
-      tap(() => triggerResize()),
-      map(() => void 0),
-    );
+  return merge(controlValue$, resize$).pipe(
+    tap(() => triggerResize()),
+    map(() => void 0)
+  );
 }
 
 /*
@@ -51,9 +48,12 @@ export function _useTextareaAutosize() {
   return (options: UseTextareaAutosizeOptions = {}) => {
     const inputControl = options?.input ?? control?.control ?? null;
 
-    return textareaAutosize({textarea, renderer, resize$}, {
-      ...options,
-      input: inputControl
-    });
+    return textareaAutosize(
+      { textarea, renderer, resize$ },
+      {
+        ...options,
+        input: inputControl
+      }
+    );
   };
 }

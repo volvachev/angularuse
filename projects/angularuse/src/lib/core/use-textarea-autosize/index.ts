@@ -4,19 +4,20 @@ import { textareaAutosize, UseTextareaAutosizeOptions } from './internal';
 import { NgControl } from '@angular/forms';
 import { useResizeObserver } from '../use-resize-observer';
 
-export function useTextareaAutosize(
-  options: UseTextareaAutosizeOptions = {},
-): Observable<void> {
+export function useTextareaAutosize(options: UseTextareaAutosizeOptions = {}): Observable<void> {
   const textarea: HTMLTextAreaElement = inject(ElementRef).nativeElement;
   const renderer = inject(Renderer2);
   const control = inject(NgControl, { optional: true });
   const resize$ = useResizeObserver();
   const inputControl = options?.input ?? control?.control ?? null;
 
-  return textareaAutosize({textarea, resize$, renderer}, {
-    ...options,
-    input: inputControl
-  });
+  return textareaAutosize(
+    { textarea, resize$, renderer },
+    {
+      ...options,
+      input: inputControl
+    }
+  );
 }
 
 export const TEXT_AREA_AUTO_SIZE = new InjectionToken<Observable<void>>(
