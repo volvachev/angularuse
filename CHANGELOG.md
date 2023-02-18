@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.0.8](https://github.com/volvachev/angularuse/compare/v0.0.7...v0.0.8) (2023-02-18)
+
+
+### Features
+
+* add new functions ([#6](https://github.com/volvachev/angularuse/issues/6)) ([d8c50a0](https://github.com/volvachev/angularuse/commit/d8c50a0fc3dd39503ffebe0ea31e2f6bd880b2f1))
+
 ### [0.0.7](https://github.com/volvachev/angularuse/compare/v0.0.6...v0.0.7) (2023-01-27)
 
 
