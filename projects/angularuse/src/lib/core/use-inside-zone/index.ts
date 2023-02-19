@@ -17,11 +17,17 @@ export function useInsideZone<T>(): MonoTypeOperatorFunction<T> {
   return insideZone(zone);
 }
 
-const unknownInsideZone = useInsideZone<unknown>;
+/*
+ * experimental realization
+ */
+export function _useInsideZone() {
+  const zone: NgZone = inject(NgZone);
+  return <T>(): MonoTypeOperatorFunction<T> => insideZone<T>(zone);
+}
 
 /*
  * experimental
  */
-export const INSIDE_ZONE = new InjectionToken<MonoTypeOperatorFunction<unknown>>('use inside zone', {
-  factory: unknownInsideZone
+export const INSIDE_ZONE = new InjectionToken<<T>() => MonoTypeOperatorFunction<T>>('use inside zone', {
+  factory: _useInsideZone
 });

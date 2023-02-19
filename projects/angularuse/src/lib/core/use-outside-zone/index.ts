@@ -12,11 +12,17 @@ export function useOutsideZone<T>(): OutsideZoneType<T> {
   return outsideZone(zone);
 }
 
-const unknownOutsideZone = useOutsideZone<unknown>;
+/*
+ * experimental realization
+ */
+export function _useOutsideZone() {
+  const zone: NgZone = inject(NgZone);
+  return <T>(): OutsideZoneType<T> => outsideZone<T>(zone);
+}
 
 /*
  * experimental
  */
-export const OUTSIDE_ZONE = new InjectionToken<OutsideZoneType<unknown>>('use outside zone', {
-  factory: unknownOutsideZone
+export const OUTSIDE_ZONE = new InjectionToken<<T>() => OutsideZoneType<T>>('use outside zone', {
+  factory: _useOutsideZone
 });

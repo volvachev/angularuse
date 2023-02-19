@@ -20,11 +20,11 @@ import { useFavicon, IconType, useUntilDestroy } from '@volvachev/angularuse';
 })
 export class ExampleComponent {
   private iconState = new Subject<IconType>();
-  private destroy$ = useUntilDestroy<void>();
+  private destroy = useUntilDestroy();
   private favicon$ = useFavicon(this.iconState.asObservable());
 
   public ngOnInit(): void {
-    this.favicon$.pipe(this.destroy$).subscribe();
+    this.favicon$.pipe(this.destroy()).subscribe();
 
     this.iconState.next('https://angular.io/assets/images/favicons/favicon.ico');
   }

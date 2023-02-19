@@ -14,8 +14,8 @@ export interface UseElementVisibilitySettings {
 })
 export class UseElementVisibilityDirective implements AfterViewInit {
   private readonly _useElementVisibility = _useElementVisibility();
-  private readonly destroy$ = useUntilDestroy<boolean>();
-  private readonly zoneTrigger = withZone<boolean>();
+  private readonly destroy = useUntilDestroy();
+  private readonly zoneTrigger = withZone();
 
   @Input()
   public useElementVisibilitySettings: UseElementVisibilitySettings = {
@@ -31,7 +31,7 @@ export class UseElementVisibilityDirective implements AfterViewInit {
 
   public ngAfterViewInit(): void {
     this._useElementVisibility(this.useElementVisibilitySettings?.visibilitySettings)
-      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy$)
+      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
       .subscribe((isElementVisible: boolean) => {
         this.useElementVisibility.emit(isElementVisible);
       });

@@ -15,8 +15,8 @@ export interface IdleSettings {
 })
 export class UseIdleDirective implements AfterViewInit {
   private readonly _useIdle = _useIdle();
-  private readonly destroy$ = useUntilDestroy<UseIdleReturn>();
-  private readonly zoneTrigger = withZone<UseIdleReturn>();
+  private readonly destroy = useUntilDestroy();
+  private readonly zoneTrigger = withZone();
 
   @Input()
   public useIdleSettings: IdleSettings = {
@@ -32,7 +32,7 @@ export class UseIdleDirective implements AfterViewInit {
 
   public ngAfterViewInit(): void {
     this._useIdle(this.useIdleSettings.timeout, this.useIdleSettings.idleSettings)
-      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy$)
+      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
       .subscribe((entry: UseIdleReturn) => {
         this.useIdle.emit(entry);
       });

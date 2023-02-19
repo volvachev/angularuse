@@ -12,7 +12,7 @@ export interface UseTextDirectionSettings extends UseTextDirectionOptions {
 })
 export class UseTextDirectionDirective implements AfterViewInit {
   private readonly _useTextDirection = _useTextDirection();
-  private readonly destroy$ = useUntilDestroy<UseTextDirectionValue>();
+  private readonly destroy = useUntilDestroy();
 
   @Input()
   public useTextDirectionSettings: UseTextDirectionSettings = {
@@ -24,7 +24,7 @@ export class UseTextDirectionDirective implements AfterViewInit {
 
   public ngAfterViewInit(): void {
     this._useTextDirection(this.useTextDirectionSettings, this.useTextDirectionSettings.self)
-      .pipe(this.destroy$)
+      .pipe(this.destroy())
       .subscribe((textDirection: UseTextDirectionValue) => {
         this.useTextDirection.emit(textDirection);
       });

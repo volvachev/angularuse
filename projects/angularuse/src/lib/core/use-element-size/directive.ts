@@ -3,7 +3,7 @@ import { _useElementSize } from './internal';
 import { useUntilDestroy } from '../use-until-destroy';
 import { ElementSize } from './index';
 import { withZone } from '../../shared/utils/with-zone';
-import { UseResizeObserverOptions } from '../use-resize-observer/internal';
+import { UseResizeObserverOptions } from '../use-resize-observer';
 
 export interface ElementSizeSettings {
   resizeSettings?: UseResizeObserverOptions;
@@ -22,8 +22,8 @@ const getDefaultSize = (): ElementSize => ({
 })
 export class UseElementSizeDirective implements AfterViewInit {
   private readonly _useElementSize = _useElementSize();
-  private readonly destroy$ = useUntilDestroy<ElementSize>();
-  private readonly zoneTrigger = withZone<ElementSize>();
+  private readonly destroy = useUntilDestroy();
+  private readonly zoneTrigger = withZone();
 
   @Input()
   public useElementSizeSettings: ElementSizeSettings = {
@@ -44,7 +44,7 @@ export class UseElementSizeDirective implements AfterViewInit {
 
   public ngAfterViewInit(): void {
     this._useElementSize(this.initialSize, this.useElementSizeSettings.resizeSettings)
-      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy$)
+      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
       .subscribe((elementSize: ElementSize) => {
         this.useElementSize.emit(elementSize);
       });

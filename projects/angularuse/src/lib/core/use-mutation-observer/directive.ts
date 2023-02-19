@@ -14,8 +14,8 @@ export interface MutationObserverSettings {
 })
 export class UseMutationObserverDirective implements AfterViewInit {
   private readonly _useMutationObserver = _useMutationObserver();
-  private readonly destroy$ = useUntilDestroy<MutationRecord[] | null>();
-  private readonly zoneTrigger = withZone<MutationRecord[] | null>();
+  private readonly destroy = useUntilDestroy();
+  private readonly zoneTrigger = withZone();
 
   @Input()
   public useMutationObserverSettings: MutationObserverSettings = {
@@ -31,7 +31,7 @@ export class UseMutationObserverDirective implements AfterViewInit {
 
   public ngAfterViewInit(): void {
     this._useMutationObserver(this.useMutationObserverSettings.mutationSettings)
-      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy$)
+      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
       .subscribe((entry: MutationRecord[] | null) => {
         this.useMutationObserver.emit(entry);
       });

@@ -18,9 +18,11 @@ export class UseFaviconDirective implements AfterViewInit {
 
   private readonly faviconStream = new Subject<IconType>();
   private readonly useFaviconFunction = _useFavicon();
-  private readonly destroy$ = useUntilDestroy<void>();
+  private readonly destroy = useUntilDestroy();
 
   public ngAfterViewInit(): void {
-    this.useFaviconFunction(this.faviconStream.asObservable(), this.useFaviconSettings).pipe(this.destroy$).subscribe();
+    this.useFaviconFunction(this.faviconStream.asObservable(), this.useFaviconSettings)
+      .pipe(this.destroy())
+      .subscribe();
   }
 }

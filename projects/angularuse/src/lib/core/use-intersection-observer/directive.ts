@@ -15,8 +15,8 @@ export interface IntersectionObserverSettings {
 })
 export class UseIntersectionObserverDirective implements AfterViewInit {
   private readonly _useIntersectionObserver = _useIntersectionObserver();
-  private readonly destroy$ = useUntilDestroy<IntersectionObserverEntry>();
-  private readonly zoneTrigger = withZone<IntersectionObserverEntry[]>();
+  private readonly destroy = useUntilDestroy();
+  private readonly zoneTrigger = withZone();
 
   @Input()
   public useIntersectionObserverSettings: IntersectionObserverSettings = {
@@ -35,7 +35,7 @@ export class UseIntersectionObserverDirective implements AfterViewInit {
       .pipe(
         this.zoneTrigger(this.isInsideNgZone),
         mergeMap((entry: IntersectionObserverEntry[]) => entry),
-        this.destroy$
+        this.destroy()
       )
       .subscribe((entry: IntersectionObserverEntry) => {
         this.useIntersectionObserver.emit(entry);

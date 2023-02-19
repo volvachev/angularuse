@@ -1,26 +1,22 @@
-import { MonoTypeOperatorFunction, ReplaySubject, takeUntil } from 'rxjs';
+import { MonoTypeOperatorFunction } from 'rxjs';
 import { ChangeDetectorRef, inject, InjectionToken, ViewRef } from '@angular/core';
+import { untilDestroy } from './internal';
 
-export function useUntilDestroy<T>(): MonoTypeOperatorFunction<T> {
-  const replaySubject = new ReplaySubject<null>();
+export function useUntilDestroy(): <T>() => MonoTypeOperatorFunction<T> {
   const viewRef = inject(ChangeDetectorRef) as ViewRef;
 
-  // Fixing a problem when a hook onDestroy throws an error (https://github.com/angular/angular/issues/46119)
-  queueMicrotask(() => {
-    viewRef.onDestroy(() => {
-      replaySubject.next(null);
-      replaySubject.complete();
-    });
-  });
-
-  return takeUntil(replaySubject.asObservable());
+  return <T>(): MonoTypeOperatorFunction<T> => untilDestroy<T>(viewRef);
 }
 
-const unknownUntilDestroy = useUntilDestroy<unknown>;
-
 /*
- * experimental
+ * old realization @deprecated
  */
+export function useUntilDestroyOld<T>(): MonoTypeOperatorFunction<T> {
+  const viewRef = inject(ChangeDetectorRef) as ViewRef;
+
+  return untilDestroy<T>(viewRef);
+}
+
 export const UNTIL_DESTROY = new InjectionToken('use until destroy', {
-  factory: unknownUntilDestroy
+  factory: useUntilDestroy
 });

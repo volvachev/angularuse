@@ -9,10 +9,9 @@ import {
   map,
   filter,
   timer,
-  Subject,
-  tap,
   switchMap,
-  startWith
+  startWith,
+  shareReplay
 } from 'rxjs';
 import { timestamp } from '../../shared/utils/timestamp';
 import { inject } from '@angular/core';
@@ -43,6 +42,7 @@ export interface UseIdleOptions {
    * @default false
    */
   initialState?: boolean;
+  throttleTime?: number;
 }
 
 export interface UseIdleReturn {
@@ -74,34 +74,29 @@ export function idle(
   timeout: number = oneMinute,
   options: UseIdleOptions = {}
 ): Observable<UseIdleReturn> {
-  const timeout$ = new Subject<void>();
-
   const { initialState = false, listenForVisibilityChange = true, events = defaultEvents } = options;
+  const initialLastActive = timestamp();
+  const initialIdle: UseIdleReturn = { lastActive: initialLastActive, idle: initialState };
 
-  let lastActive = timestamp();
+  const userEvents$ = defer(() =>
+    iif(
+      () => Boolean(windowRef),
+      listenBrowserEvents(windowRef!, documentRef, listenForVisibilityChange, events).pipe(
+        throttleTime(options?.throttleTime ?? 50),
+        map(() => ({ idle: false, lastActive: timestamp() }))
+      ),
+      EMPTY
+    )
+  ).pipe(shareReplay({ refCount: true, bufferSize: 1 }));
 
   return consistentQueue(
-    () => ({ lastActive: lastActive, idle: initialState }),
+    () => initialIdle,
     merge(
-      defer(() =>
-        iif(
-          () => Boolean(windowRef),
-          listenBrowserEvents(windowRef!, documentRef, listenForVisibilityChange, events).pipe(
-            throttleTime(50),
-            // TODO: refactor to Rx way
-            tap(() => {
-              lastActive = timestamp();
-              timeout$.next();
-            }),
-            map(() => ({ idle: false, lastActive }))
-          ),
-          EMPTY
-        )
-      ),
-      timeout$.asObservable().pipe(
-        startWith(undefined),
-        switchMap(() => timer(timeout)),
-        map(() => ({ idle: true, lastActive }))
+      userEvents$,
+      userEvents$.pipe(
+        startWith(initialIdle),
+        switchMap((idleData: UseIdleReturn) => timer(timeout).pipe(map(() => idleData))),
+        map(({ lastActive }) => ({ idle: true, lastActive }))
       )
     )
   );

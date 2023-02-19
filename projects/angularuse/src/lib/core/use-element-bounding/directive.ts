@@ -17,8 +17,8 @@ export interface ElementBoundingSettings {
 })
 export class UseElementBoundingDirective implements AfterViewInit {
   private readonly _useElementBounding = _useElementBounding();
-  private readonly destroy$ = useUntilDestroy<UseElementBounding>();
-  private readonly zoneTrigger = withZone<UseElementBounding>();
+  private readonly destroy = useUntilDestroy();
+  private readonly zoneTrigger = withZone();
 
   @Input()
   public useElementBoundingSettings: ElementBoundingSettings = {
@@ -34,7 +34,7 @@ export class UseElementBoundingDirective implements AfterViewInit {
 
   public ngAfterViewInit(): void {
     this._useElementBounding(this.useElementBoundingSettings.boundingSettings)
-      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy$)
+      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
       .subscribe((elementSize: UseElementBounding) => {
         this.useElementBounding.emit(elementSize);
       });

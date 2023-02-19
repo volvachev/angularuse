@@ -14,8 +14,8 @@ export interface UseTextareaAutosizeSettings {
 })
 export class UseTextareaAutosizeDirective implements AfterViewInit {
   private readonly _useTextareaAutosize = _useTextareaAutosize();
-  private readonly destroy$ = useUntilDestroy<void>();
-  private readonly zoneTrigger = withZone<void>();
+  private readonly destroy = useUntilDestroy();
+  private readonly zoneTrigger = withZone();
 
   @Input()
   public useTextareaAutosizeSettings: UseTextareaAutosizeSettings = {
@@ -28,7 +28,7 @@ export class UseTextareaAutosizeDirective implements AfterViewInit {
 
   public ngAfterViewInit(): void {
     this._useTextareaAutosize(this.useTextareaAutosizeSettings.textareaAutosizeSettings)
-      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy$)
+      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
       .subscribe();
   }
 }

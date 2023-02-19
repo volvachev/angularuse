@@ -1,7 +1,7 @@
 import { AfterViewInit, Directive, ElementRef, EventEmitter, inject, Input, Output } from '@angular/core';
 import { useUntilDestroy } from '../use-until-destroy';
 import { useFocus } from '.';
-import { MonoTypeOperatorFunction, Subject, withLatestFrom } from 'rxjs';
+import { Subject, withLatestFrom } from 'rxjs';
 
 @Directive({
   selector: '[useFocus]',
@@ -10,7 +10,7 @@ import { MonoTypeOperatorFunction, Subject, withLatestFrom } from 'rxjs';
 export class UseFocusDirective implements AfterViewInit {
   private readonly isFocused$ = useFocus();
   private readonly element: HTMLElement = inject(ElementRef).nativeElement;
-  private readonly destroy$ = useUntilDestroy<boolean>();
+  private readonly destroy = useUntilDestroy();
   private readonly focusCommand = new Subject<boolean>();
 
   /**
@@ -26,13 +26,13 @@ export class UseFocusDirective implements AfterViewInit {
   public useFocus = new EventEmitter<boolean>();
 
   public ngAfterViewInit(): void {
-    this.isFocused$.pipe(this.destroy$).subscribe((isFocused: boolean) => {
+    this.isFocused$.pipe(this.destroy()).subscribe((isFocused: boolean) => {
       this.useFocus.emit(isFocused);
     });
 
     this.focusCommand
       .asObservable()
-      .pipe(withLatestFrom(this.isFocused$), this.destroy$ as unknown as MonoTypeOperatorFunction<[boolean, boolean]>)
+      .pipe(withLatestFrom(this.isFocused$), this.destroy())
       .subscribe(([focusCommand, isFocused]) => {
         if (!focusCommand && isFocused) {
           this.element.blur();

@@ -15,8 +15,8 @@ export interface ResizeObserverSettings {
 })
 export class UseResizeObserverDirective implements AfterViewInit {
   private readonly _useResizeObserver = _useResizeObserver();
-  private readonly destroy$ = useUntilDestroy<ResizeObserverEntry>();
-  private readonly zoneTrigger = withZone<ResizeObserverEntry[]>();
+  private readonly destroy = useUntilDestroy();
+  private readonly zoneTrigger = withZone();
 
   @Input()
   public useResizeObserverSettings: ResizeObserverSettings = {
@@ -35,7 +35,7 @@ export class UseResizeObserverDirective implements AfterViewInit {
       .pipe(
         this.zoneTrigger(this.isInsideNgZone),
         mergeMap((entry: ResizeObserverEntry[]) => entry),
-        this.destroy$
+        this.destroy()
       )
       .subscribe((entry: ResizeObserverEntry) => {
         this.useResizeObserver.emit(entry);
