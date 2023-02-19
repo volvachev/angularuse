@@ -1,6 +1,6 @@
 {
     "name": "@volvachev/angularuse",
-    "version": "0.0.9",
+    "version": "0.1.0",
     "peerDependencies": {
         "@angular/common": "^15.1.0",
         "@angular/core": "^15.1.0",
