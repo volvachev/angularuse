@@ -7,7 +7,7 @@ Watch for changes being made to the DOM tree. [MutationObserver MDN](https://dev
 ```ts
 import { ChangeDetectionStrategy, Component, inject, HostBinding, OnInit } from '@angular/core';
 import { AsyncPipe, JsonPipe } from '@angular/common';
-import { useMutationObserver, MUTATION_OBSERVER } from '@volvachev/angularuse';
+import { useMutationObserver } from '@volvachev/angularuse';
 import { tap } from 'rxjs';
 
 @Component({
@@ -19,8 +19,7 @@ import { tap } from 'rxjs';
   imports: [AsyncPipe, JsonPipe],
 })
 export class ExampleComponent implements OnInit {
-  public mutationObserver$ = useMutationObserver().pipe(tap(console.log));
-  public mutationObserverFromDI$ = inject(MUTATION_OBSERVER);
+  public mutationObserver$ = useMutationObserver({attributes: true}).pipe(tap(console.log));
 
   @HostBinding('class.test')
   public test = false;
@@ -39,7 +38,6 @@ export class ExampleComponent implements OnInit {
 
 ```html
 <div> dom tree changes from function: {{ mutationObserver$ | async | json }}</div>
-<div> dom tree changes from DI: {{ mutationObserverFromDI$ | async | json }}</div>
 ```
 
 ### Directive example
@@ -68,7 +66,7 @@ import { UseMutationObserverDirective } from '@volvachev/angularuse';
 export class ExampleComponent {
   public className = '';
 
-  public handler(event: ResizeObserverEntry): void {
+  public handler(event: MutationRecord[] | null): void {
     console.log(event);
   }
 
