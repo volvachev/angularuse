@@ -33,6 +33,9 @@ Collection of essential Angular inject functions
 - [useTextDirection](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-text-direction/index.md) - Reactive [dir](https://developer.mozilla.org/en-US/docs/Web/HTML/Global_attributes/dir) of the element's text;
 - [useIntersectionObserver](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-intersection-observer/index.md) - Detects that a target element's visibility;
 - [useIdle](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-idle/index.md) - Tracks whether the user is being inactive;
+- [useMouse](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-mouse/index.md) - Reactive mouse position;
+- [useMouseInElement](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-mouse-in-element/index.md) - Reactive mouse position related to an element;
+- [useMousePressed](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-mouse-pressed/index.md) - Reactive mouse position;
 
 ### inject rxjs functions
 - [useInsideZone](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-inside-zone/index.md) and `insideZone` - RxJs operator, that run subscription function inside `NgZone`;

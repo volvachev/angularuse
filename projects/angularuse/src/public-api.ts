@@ -29,6 +29,9 @@ export * from './lib/core/use-mutation-observer';
 export * from './lib/core/use-text-direction';
 export * from './lib/core/use-intersection-observer';
 export * from './lib/core/use-idle';
+export * from './lib/core/use-mouse';
+export * from './lib/core/use-mouse-in-element';
+export * from './lib/core/use-mouse-pressed';
 
 // Directives
 export * from './lib/core/use-element-bounding/directive';
@@ -42,3 +45,6 @@ export * from './lib/core/use-mutation-observer/directive';
 export * from './lib/core/use-text-direction/directive';
 export * from './lib/core/use-intersection-observer/directive';
 export * from './lib/core/use-idle/directive';
+export * from './lib/core/use-mouse/directive';
+export * from './lib/core/use-mouse-in-element/directive';
+export * from './lib/core/use-mouse-pressed/directive';

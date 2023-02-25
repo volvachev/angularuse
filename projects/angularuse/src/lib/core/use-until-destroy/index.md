@@ -8,7 +8,7 @@ RxJs operator, which automatically unsubscribes from the `Observable` on hook `O
 import { ChangeDetectionStrategy, Component, inject, OnInit } from '@angular/core';
 import { AsyncPipe } from '@angular/common';
 import { interval, map } from 'rxjs';
-import { useUntilDestroy, useResizeObserver, UNTIL_DESTROY } from '@volvachev/angularuse';
+import { useUntilDestroy, useResizeObserver } from '@volvachev/angularuse';
 
 @Component({
   selector: 'app-example',
@@ -20,7 +20,6 @@ import { useUntilDestroy, useResizeObserver, UNTIL_DESTROY } from '@volvachev/an
 })
 export class ExampleComponent implements OnInit {
   public destroy = useUntilDestroy();
-  public destroyFromDI = inject(UNTIL_DESTROY);
   public elementSizes$ = useResizeObserver().pipe(
     map(entry => entry[0]),
     this.destroy(),
@@ -34,12 +33,6 @@ export class ExampleComponent implements OnInit {
 
     interval(1000).pipe(
       this.destroy()
-    ).subscribe((value) => {
-      console.log(value);
-    });
-
-    interval(1000).pipe(
-      this.destroyFromDI()
     ).subscribe((value) => {
       console.log(value);
     });
