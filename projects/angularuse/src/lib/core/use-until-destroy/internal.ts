@@ -1,5 +1,5 @@
 import { MonoTypeOperatorFunction, ReplaySubject, takeUntil } from 'rxjs';
-import { ViewRef } from '@angular/core';
+import { ChangeDetectorRef, inject, ViewRef } from '@angular/core';
 
 export function untilDestroy<T>(viewRef: ViewRef): MonoTypeOperatorFunction<T> {
   const replaySubject = new ReplaySubject<null>();
@@ -13,4 +13,16 @@ export function untilDestroy<T>(viewRef: ViewRef): MonoTypeOperatorFunction<T> {
   });
 
   return takeUntil(replaySubject.asObservable());
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-types
+export function useOnDestroy(): (cb: Function) => void {
+  const viewRef = inject(ChangeDetectorRef) as ViewRef;
+
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  return (cb: Function): void => {
+    queueMicrotask(() => {
+      viewRef.onDestroy(cb);
+    });
+  };
 }

@@ -3,6 +3,7 @@ import { inject, InjectionToken } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
 
+// TODO: Types move to another files
 export interface UseWindowSizeOptions {
   initialWidth?: number;
   initialHeight?: number;

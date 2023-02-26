@@ -48,3 +48,9 @@ export * from './lib/core/use-idle/directive';
 export * from './lib/core/use-mouse/directive';
 export * from './lib/core/use-mouse-in-element/directive';
 export * from './lib/core/use-mouse-pressed/directive';
+
+// Signals
+export * from './lib/core/use-window-focus/index-next';
+export * from './lib/core/use-window-scroll/index-next';
+export * from './lib/core/use-window-size/index-next';
+export * from './lib/core/use-document-visibility/index-next';
