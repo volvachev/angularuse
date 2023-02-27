@@ -3,19 +3,21 @@ import { DOCUMENT } from '@angular/common';
 import { UseWindowSizeOptions, WindowSize } from './index';
 import { useOnDestroy } from '../use-until-destroy/internal';
 
-const getWindowSizes = (includeScrollbar: boolean, window: Window & typeof globalThis) => (): WindowSize => {
-  if (includeScrollbar) {
-    return {
-      width: window.innerWidth,
-      height: window.innerHeight
-    };
-  }
+const getWindowSizes =
+  (includeScrollbar: boolean, window: Window & typeof globalThis, signal: SettableSignal<Readonly<WindowSize>>) =>
+  (): void => {
+    if (includeScrollbar) {
+      signal.set({
+        width: window.innerWidth,
+        height: window.innerHeight
+      });
+    }
 
-  return {
-    width: window.document.documentElement.clientWidth,
-    height: window.document.documentElement.clientHeight
+    signal.set({
+      width: window.document.documentElement.clientWidth,
+      height: window.document.documentElement.clientHeight
+    });
   };
-};
 
 export function useWindowSizeSignal(options: UseWindowSizeOptions = {}): SettableSignal<Readonly<WindowSize>> {
   const {
@@ -32,8 +34,9 @@ export function useWindowSizeSignal(options: UseWindowSizeOptions = {}): Settabl
     return windowSizeSignal;
   }
 
-  const getWindowSizesCurry = getWindowSizes(includeScrollbar, windowRef);
-  windowSizeSignal.set(getWindowSizesCurry());
+  const getWindowSizesCurry = getWindowSizes(includeScrollbar, windowRef, windowSizeSignal);
+
+  getWindowSizesCurry();
 
   windowRef.addEventListener('resize', getWindowSizesCurry, { passive: true });
 

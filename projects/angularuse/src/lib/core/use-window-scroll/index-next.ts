@@ -3,12 +3,13 @@ import { DOCUMENT } from '@angular/common';
 import { Position } from '../types';
 import { useOnDestroy } from '../use-until-destroy/internal';
 
-const getPagePositionOfWindow = (windowRef: Window & typeof globalThis) => (): Position => {
-  return {
-    x: windowRef.pageXOffset,
-    y: windowRef.pageYOffset
+const getPagePositionOfWindow =
+  (windowRef: Window & typeof globalThis, signal: SettableSignal<Position>) => (): void => {
+    signal.set({
+      x: windowRef.pageXOffset,
+      y: windowRef.pageYOffset
+    });
   };
-};
 
 export function useWindowScrollSignal(): SettableSignal<Position> {
   const windowRef: (Window & typeof globalThis) | null = inject(DOCUMENT).defaultView;
@@ -19,9 +20,9 @@ export function useWindowScrollSignal(): SettableSignal<Position> {
     return windowScrollSignal;
   }
 
-  const getPagePositionOfWindowCurry = getPagePositionOfWindow(windowRef);
+  const getPagePositionOfWindowCurry = getPagePositionOfWindow(windowRef, windowScrollSignal);
 
-  windowScrollSignal.set(getPagePositionOfWindowCurry());
+  getPagePositionOfWindowCurry();
 
   windowRef.addEventListener('scroll', getPagePositionOfWindowCurry, { capture: false, passive: true });
 

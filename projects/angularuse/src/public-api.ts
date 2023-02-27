@@ -54,3 +54,5 @@ export * from './lib/core/use-window-focus/index-next';
 export * from './lib/core/use-window-scroll/index-next';
 export * from './lib/core/use-window-size/index-next';
 export * from './lib/core/use-document-visibility/index-next';
+export * from './lib/core/use-resize-observer/index-next';
+export * from './lib/core/use-resize-observer/directive-next';
