@@ -1,8 +1,6 @@
-import { ElementRef, inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { filter, fromEvent, map, Observable, switchMap } from 'rxjs';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
-import { _useMouse, MouseSourceType, UseMouseOptions } from '../use-mouse/internal';
+import { MouseSourceType, UseMouseFunction, UseMouseOptions } from '../use-mouse/internal';
 import { WindowRef } from '../types';
 
 export interface UseMouseInElementOptions extends UseMouseOptions {
@@ -13,7 +11,7 @@ export interface MouseInElementParams {
   windowRef: WindowRef;
   documentRef: Document;
   targetRef: HTMLElement;
-  useMouseFunction: ReturnType<typeof _useMouse>;
+  useMouseFunction: UseMouseFunction;
 }
 
 export type UseMouseInElementReturn = {
@@ -95,19 +93,4 @@ export function mouseInElement(
         )
       )
     );
-}
-
-/*
- * internal realisation for reuse inside directives
- */
-export function _useMouseInElement() {
-  const target = inject(ElementRef, { optional: true });
-  const documentRef = inject(DOCUMENT);
-  const windowRef = documentRef.defaultView;
-  const targetRef = target?.nativeElement ?? document.body;
-  const useMouseFunction = _useMouse();
-
-  return (options: UseMouseInElementOptions = {}): Observable<UseMouseInElementReturn> => {
-    return mouseInElement({ windowRef, targetRef, documentRef, useMouseFunction }, options);
-  };
 }

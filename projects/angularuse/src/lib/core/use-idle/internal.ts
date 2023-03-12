@@ -14,8 +14,6 @@ import {
   shareReplay
 } from 'rxjs';
 import { timestamp } from '../../shared/utils/timestamp';
-import { inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
 import { WindowRef } from '../types';
 
@@ -101,16 +99,4 @@ export function idle(
       )
     )
   );
-}
-
-/*
- * internal realisation for reuse inside directives
- */
-export function _useIdle() {
-  const document = inject(DOCUMENT);
-  const windowRef = inject(DOCUMENT).defaultView;
-
-  return (timeout: number = oneMinute, options: UseIdleOptions = {}): Observable<UseIdleReturn> => {
-    return idle(windowRef, document, timeout, options);
-  };
 }

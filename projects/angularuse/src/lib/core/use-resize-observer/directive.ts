@@ -1,8 +1,10 @@
 import { AfterViewInit, Directive, EventEmitter, Input, Output } from '@angular/core';
-import { _useResizeObserver, UseResizeObserverOptions } from './internal';
+import { UseResizeObserverOptions } from './internal';
 import { useUntilDestroy } from '../use-until-destroy';
 import { withZone } from '../../shared/utils/with-zone';
 import { mergeMap } from 'rxjs';
+import { useRunInInjectContext } from '../../shared/utils/environment-injector';
+import { useResizeObserver } from '.';
 
 export interface ResizeObserverSettings {
   resizeSettings?: UseResizeObserverOptions;
@@ -14,9 +16,9 @@ export interface ResizeObserverSettings {
   standalone: true
 })
 export class UseResizeObserverDirective implements AfterViewInit {
-  private readonly _useResizeObserver = _useResizeObserver();
   private readonly destroy = useUntilDestroy();
   private readonly zoneTrigger = withZone();
+  private readonly runInInjectContext = useRunInInjectContext();
 
   @Input()
   public useResizeObserverSettings: ResizeObserverSettings = {
@@ -31,14 +33,16 @@ export class UseResizeObserverDirective implements AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this._useResizeObserver(this.useResizeObserverSettings.resizeSettings)
-      .pipe(
-        this.zoneTrigger(this.isInsideNgZone),
-        mergeMap((entry: ResizeObserverEntry[]) => entry),
-        this.destroy()
-      )
-      .subscribe((entry: ResizeObserverEntry) => {
-        this.useResizeObserver.emit(entry);
-      });
+    this.runInInjectContext(() => {
+      useResizeObserver(this.useResizeObserverSettings.resizeSettings)
+        .pipe(
+          this.zoneTrigger(this.isInsideNgZone),
+          mergeMap((entry: ResizeObserverEntry[]) => entry),
+          this.destroy()
+        )
+        .subscribe((entry: ResizeObserverEntry) => {
+          this.useResizeObserver.emit(entry);
+        });
+    });
   }
 }

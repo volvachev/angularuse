@@ -1,8 +1,6 @@
 import { WindowRef } from '../types';
 import { of, merge, fromEvent, map, distinctUntilChanged } from 'rxjs';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
-import { inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 
 export function pageLeave(windowRef: WindowRef, documentRef: Document) {
   if (!windowRef) {
@@ -28,14 +26,4 @@ export function pageLeave(windowRef: WindowRef, documentRef: Document) {
       fromEvent<MouseEvent>(documentRef, 'mouseenter', { passive: true })
     )
   ).pipe(map(handler), distinctUntilChanged());
-}
-
-/*
- * internal realisation for reuse inside directives
- */
-export function _usePageLeave() {
-  const documentRef = inject(DOCUMENT);
-  const windowRef = documentRef.defaultView;
-
-  return () => pageLeave(windowRef, documentRef);
 }

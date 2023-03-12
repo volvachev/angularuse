@@ -1,7 +1,9 @@
 import { AfterViewInit, Directive, EventEmitter, Input, Output } from '@angular/core';
 import { withZone } from '../../shared/utils/with-zone';
 import { useUntilDestroy } from '../use-until-destroy';
-import { _useElementBounding, UseElementBounding, UseElementBoundingOptions } from './internal';
+import { UseElementBounding, UseElementBoundingOptions } from './internal';
+import { useElementBounding } from '.';
+import { useRunInInjectContext } from '../../shared/utils/environment-injector';
 
 export interface ElementBoundingSettings {
   boundingSettings?: UseElementBoundingOptions;
@@ -16,9 +18,9 @@ export interface ElementBoundingSettings {
   standalone: true
 })
 export class UseElementBoundingDirective implements AfterViewInit {
-  private readonly _useElementBounding = _useElementBounding();
   private readonly destroy = useUntilDestroy();
   private readonly zoneTrigger = withZone();
+  private readonly runInInjectContext = useRunInInjectContext();
 
   @Input()
   public useElementBoundingSettings: ElementBoundingSettings = {
@@ -33,10 +35,12 @@ export class UseElementBoundingDirective implements AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this._useElementBounding(this.useElementBoundingSettings.boundingSettings)
-      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
-      .subscribe((elementSize: UseElementBounding) => {
-        this.useElementBounding.emit(elementSize);
-      });
+    this.runInInjectContext(() => {
+      useElementBounding(this.useElementBoundingSettings.boundingSettings)
+        .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
+        .subscribe((elementSize: UseElementBounding) => {
+          this.useElementBounding.emit(elementSize);
+        });
+    });
   }
 }
