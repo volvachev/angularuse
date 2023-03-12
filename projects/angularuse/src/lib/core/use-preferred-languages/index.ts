@@ -2,9 +2,10 @@ import { fromEvent, map, Observable, of } from 'rxjs';
 import { inject, InjectionToken } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
+import { WindowRef } from '../types';
 
 export function usePreferredLanguages(): Observable<ReadonlyArray<string>> {
-  const window: (Window & typeof globalThis) | null = inject(DOCUMENT).defaultView;
+  const window: WindowRef = inject(DOCUMENT).defaultView;
 
   if (!window) {
     return of(['en']);

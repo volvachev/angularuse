@@ -2,12 +2,13 @@ import { ElementRef, inject, InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
 import { intersectionObserver, UseIntersectionObserverOptions } from './internal';
 import { DOCUMENT } from '@angular/common';
+import { WindowRef } from '../types';
 
 export function useIntersectionObserver(
   options: UseIntersectionObserverOptions = {}
 ): Observable<IntersectionObserverEntry[]> {
   const target = inject(ElementRef).nativeElement as HTMLElement;
-  const window: (Window & typeof globalThis) | null = inject(DOCUMENT).defaultView;
+  const window: WindowRef = inject(DOCUMENT).defaultView;
 
   return intersectionObserver(window, target, options);
 }

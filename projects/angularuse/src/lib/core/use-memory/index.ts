@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { map, Observable, of, timer } from 'rxjs';
 import { inject, InjectionToken } from '@angular/core';
+import { WindowRef } from '../types';
 
 export interface MemoryInfo {
   /**
@@ -28,7 +29,7 @@ type PerformanceMemory = Performance & {
 };
 
 export function useMemory(options: UseMemoryOptions = {}): Observable<MemoryInfo | null> {
-  const window: (Window & typeof globalThis) | null = inject(DOCUMENT).defaultView;
+  const window: WindowRef = inject(DOCUMENT).defaultView;
   const performance = window?.performance;
 
   if (typeof performance === 'undefined' || !('memory' in performance)) {

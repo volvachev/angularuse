@@ -2,6 +2,7 @@ import { ElementRef, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { debounceTime as debounceTimeOperator, fromEvent, map, Observable, of } from 'rxjs';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
+import { WindowRef } from '../types';
 
 export interface UseElementVisibilityOptions {
   scrollTarget?: HTMLElement | null;
@@ -13,7 +14,7 @@ type UseElementVisibilityFunction = (options?: UseElementVisibilityOptions) => O
 interface ElementVisibilitySettings {
   element: HTMLElement;
   document: Document;
-  window: (Window & typeof globalThis) | null;
+  window: WindowRef;
 }
 
 const testBounding = (settings: ElementVisibilitySettings) => (): boolean => {
@@ -61,7 +62,7 @@ export function elementVisibility(
 export function _useElementVisibility(): UseElementVisibilityFunction {
   const document: Document = inject(DOCUMENT);
   const element = inject(ElementRef).nativeElement as HTMLElement;
-  const window: (Window & typeof globalThis) | null = document.defaultView;
+  const window: WindowRef = document.defaultView;
 
   return (options: UseElementVisibilityOptions = {}): Observable<boolean> => {
     return elementVisibility({ element, document, window }, options);

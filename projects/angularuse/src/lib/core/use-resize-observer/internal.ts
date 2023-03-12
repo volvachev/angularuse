@@ -1,6 +1,7 @@
 import { debounceTime as debounceTimeOperator, filter, finalize, map, Observable, of, Subject } from 'rxjs';
 import { ElementRef, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { WindowRef } from '../types';
 
 type UseResizeObserverFunction = (options?: UseResizeObserverOptions) => Observable<ResizeObserverEntry[]>;
 
@@ -25,7 +26,7 @@ function createResizeObserver(windowRef: Window & typeof globalThis): void {
 }
 
 export function resizeObserver(
-  windowRef: (Window & typeof globalThis) | null,
+  windowRef: WindowRef,
   target: HTMLElement,
   options: UseResizeObserverOptions = {}
 ): Observable<ResizeObserverEntry[]> {
@@ -52,7 +53,7 @@ export function resizeObserver(
  */
 export function _useResizeObserver(): UseResizeObserverFunction {
   const target = inject(ElementRef).nativeElement as HTMLElement;
-  const windowRef: (Window & typeof globalThis) | null = inject(DOCUMENT).defaultView;
+  const windowRef: WindowRef = inject(DOCUMENT).defaultView;
 
   return function useResizeObserver(options: UseResizeObserverOptions = {}): Observable<ResizeObserverEntry[]> {
     return resizeObserver(windowRef, target, options);

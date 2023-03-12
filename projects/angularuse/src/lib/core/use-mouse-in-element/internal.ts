@@ -3,13 +3,14 @@ import { DOCUMENT } from '@angular/common';
 import { filter, fromEvent, map, Observable, switchMap } from 'rxjs';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
 import { _useMouse, MouseSourceType, UseMouseOptions } from '../use-mouse/internal';
+import { WindowRef } from '../types';
 
 export interface UseMouseInElementOptions extends UseMouseOptions {
   handleOutside?: boolean;
 }
 
 export interface MouseInElementParams {
-  windowRef: (Window & typeof globalThis) | null;
+  windowRef: WindowRef;
   documentRef: Document;
   targetRef: HTMLElement;
   useMouseFunction: ReturnType<typeof _useMouse>;

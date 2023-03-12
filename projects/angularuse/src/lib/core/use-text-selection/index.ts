@@ -2,6 +2,7 @@ import { inject, InjectionToken } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { fromEvent, map, Observable, of } from 'rxjs';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
+import { WindowRef } from '../types';
 
 export interface UseTextSelection {
   selection: Selection | null;
@@ -44,7 +45,7 @@ const getTextSelectionInformation = (window: Window & typeof globalThis) => (): 
 
 export function useTextSelection(): Observable<UseTextSelection> {
   const document: Document = inject(DOCUMENT);
-  const window: (Window & typeof globalThis) | null = document.defaultView;
+  const window: WindowRef = document.defaultView;
 
   if (!window) {
     return of(defaultSelection());

@@ -1,4 +1,4 @@
-import { Position } from '../types';
+import { Position, WindowRef } from '../types';
 import { inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { of, merge, fromEvent, iif, defer, EMPTY, map, filter, Observable } from 'rxjs';
@@ -84,10 +84,7 @@ const touchHandler = (type: UseMouseOptions['type'], event: TouchEvent): UseMous
   return undefined;
 };
 
-export function useMouseInternal(
-  windowRef: (Window & typeof globalThis) | null,
-  options: UseMouseOptions = {}
-): Observable<UseMouseReturn> {
+export function useMouseInternal(windowRef: WindowRef, options: UseMouseOptions = {}): Observable<UseMouseReturn> {
   const { type = 'page', touch = true, resetOnTouchEnds = false, initialValue = { x: 0, y: 0 } } = options;
 
   const reset = (): UseMouseReturn => ({ ...initialValue, sourceType: null });

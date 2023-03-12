@@ -2,10 +2,11 @@ import { inject, InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
 import { idle, UseIdleOptions, UseIdleReturn } from './internal';
 import { DOCUMENT } from '@angular/common';
+import { WindowRef } from '../types';
 
 export function useIdle(timeout?: number, options: UseIdleOptions = {}): Observable<UseIdleReturn> {
   const documentRef = inject(DOCUMENT);
-  const windowRef: (Window & typeof globalThis) | null = documentRef.defaultView;
+  const windowRef: WindowRef = documentRef.defaultView;
 
   return idle(windowRef, documentRef, timeout, options);
 }
