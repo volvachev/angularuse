@@ -2,6 +2,7 @@ import { ElementRef, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { Observable, of } from 'rxjs';
 import { debounceTime as debounceTimeOperator } from 'rxjs/internal/operators/debounceTime';
+import { WindowRef } from '../types';
 
 export interface UseMutationObserverOptions extends MutationObserverInit {
   target?: HTMLElement;
@@ -10,7 +11,7 @@ export interface UseMutationObserverOptions extends MutationObserverInit {
 
 export function mutationObserver(
   target: HTMLElement,
-  windowRef: (Window & typeof globalThis) | null,
+  windowRef: WindowRef,
   options: UseMutationObserverOptions = {}
 ): Observable<MutationRecord[] | null> {
   if (!windowRef || !('MutationObserver' in windowRef)) {

@@ -17,6 +17,7 @@ import { timestamp } from '../../shared/utils/timestamp';
 import { inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
+import { WindowRef } from '../types';
 
 export type WindowEventName = keyof WindowEventMap;
 
@@ -69,7 +70,7 @@ function listenBrowserEvents(
 }
 
 export function idle(
-  windowRef: (Window & typeof globalThis) | null,
+  windowRef: WindowRef,
   documentRef: Document,
   timeout: number = oneMinute,
   options: UseIdleOptions = {}

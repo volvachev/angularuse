@@ -2,6 +2,7 @@ import { defer, EMPTY, fromEvent, iif, map, merge, Observable, of } from 'rxjs';
 import { inject, InjectionToken } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
+import { WindowRef } from '../types';
 
 export interface UseWindowSizeOptions {
   initialWidth?: number;
@@ -49,7 +50,7 @@ export function useWindowSize(options: UseWindowSizeOptions = {}): Observable<Re
     listenOrientation = true,
     includeScrollbar = true
   } = options;
-  const window: (Window & typeof globalThis) | null = inject(DOCUMENT).defaultView;
+  const window: WindowRef = inject(DOCUMENT).defaultView;
 
   if (!window) {
     return of({ width: initialWidth, height: initialHeight });

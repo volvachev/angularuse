@@ -1,6 +1,7 @@
 import { Observable, of, debounceTime as debounceTimeOperator } from 'rxjs';
 import { ElementRef, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { WindowRef } from '../types';
 
 export interface UseIntersectionObserverOptions {
   /**
@@ -22,7 +23,7 @@ export interface UseIntersectionObserverOptions {
 }
 
 export function intersectionObserver(
-  windowRef: (Window & typeof globalThis) | null,
+  windowRef: WindowRef,
   target: HTMLElement,
   options: UseIntersectionObserverOptions
 ): Observable<IntersectionObserverEntry[]> {
@@ -56,7 +57,7 @@ export function intersectionObserver(
  */
 export function _useIntersectionObserver() {
   const target = inject(ElementRef).nativeElement as HTMLElement;
-  const window: (Window & typeof globalThis) | null = inject(DOCUMENT).defaultView;
+  const window: WindowRef = inject(DOCUMENT).defaultView;
 
   return (options: UseIntersectionObserverOptions = {}): Observable<IntersectionObserverEntry[]> => {
     return intersectionObserver(window, target, options);

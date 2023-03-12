@@ -2,10 +2,11 @@ import { inject, InjectionToken } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { fromEvent, map, merge, Observable, of } from 'rxjs';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
+import { WindowRef } from '../types';
 
 export function useWindowFocus(): Observable<boolean> {
   const document: Document = inject(DOCUMENT);
-  const window: (Window & typeof globalThis) | null = document.defaultView;
+  const window: WindowRef = document.defaultView;
 
   if (!window) {
     return of(false);

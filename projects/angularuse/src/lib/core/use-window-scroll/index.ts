@@ -1,4 +1,4 @@
-import { Position } from '../types';
+import { Position, WindowRef } from '../types';
 import { fromEvent, map, Observable, of } from 'rxjs';
 import { inject, InjectionToken } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
@@ -13,7 +13,7 @@ function getPagePositionOfWindow(window: Window & typeof globalThis): Position {
 
 export function useWindowScroll(): Observable<Position> {
   const document: Document = inject(DOCUMENT);
-  const window: (Window & typeof globalThis) | null = document.defaultView;
+  const window: WindowRef = document.defaultView;
 
   if (!window) {
     return of({

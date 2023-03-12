@@ -36,6 +36,9 @@ Collection of essential Angular inject functions
 - [useMouse](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-mouse/index.md) - Reactive mouse position;
 - [useMouseInElement](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-mouse-in-element/index.md) - Reactive mouse position related to an element;
 - [useMousePressed](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-mouse-pressed/index.md) - Reactive mouse position;
+- [usePreferredColorScheme](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-preferred-color-scheme/index.md) - Reactive [prefers-color-scheme](https://developer.mozilla.org/en-US/docs/Web/CSS/@media/prefers-color-scheme) media query;
+- [usePageLeave](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-page-leave/index.md) - Reactive state to show whether the mouse leaves the page;
+- [useElementHover](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-element-hover/index.md) - Reactive element's hover state;
 
 ### inject rxjs functions
 - [useInsideZone](https://github.com/volvachev/angularuse/blob/master/projects/angularuse/src/lib/core/use-inside-zone/index.md) and `insideZone` - RxJs operator, that run subscription function inside `NgZone`;

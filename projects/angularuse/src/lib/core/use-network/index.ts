@@ -2,6 +2,7 @@ import { defer, EMPTY, fromEvent, iif, map, merge, Observable, of } from 'rxjs';
 import { inject, InjectionToken } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
+import { WindowRef } from '../types';
 
 interface HasEventTargetAddRemove<E> {
   addEventListener(
@@ -47,7 +48,7 @@ type NavigatorConnection = Navigator & {
 };
 
 export function useNetwork(): Observable<NetworkInformation> {
-  const window: (Window & typeof globalThis) | null = inject(DOCUMENT).defaultView;
+  const window: WindowRef = inject(DOCUMENT).defaultView;
 
   if (!window) {
     return of(generateDefaultNetworkInformation());

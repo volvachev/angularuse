@@ -2,10 +2,11 @@ import { inject, InjectionToken } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { filter, fromEvent, map, merge, Observable, of } from 'rxjs';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
+import { WindowRef } from '../types';
 
 export function useActiveElement(): Observable<null | Element> {
   const document: Document = inject(DOCUMENT);
-  const window: (Window & typeof globalThis) | null = document.defaultView;
+  const window: WindowRef = document.defaultView;
 
   if (!window) {
     return of(null);

@@ -32,6 +32,9 @@ export * from './lib/core/use-idle';
 export * from './lib/core/use-mouse';
 export * from './lib/core/use-mouse-in-element';
 export * from './lib/core/use-mouse-pressed';
+export * from './lib/core/use-element-hover';
+export * from './lib/core/use-page-leave';
+export * from './lib/core/use-preferred-color-scheme';
 
 // Directives
 export * from './lib/core/use-element-bounding/directive';
@@ -48,3 +51,6 @@ export * from './lib/core/use-idle/directive';
 export * from './lib/core/use-mouse/directive';
 export * from './lib/core/use-mouse-in-element/directive';
 export * from './lib/core/use-mouse-pressed/directive';
+export * from './lib/core/use-element-hover/directive';
+export * from './lib/core/use-page-leave/directive';
+export * from './lib/core/use-preferred-color-scheme/directive';

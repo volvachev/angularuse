@@ -3,6 +3,7 @@ import { consistentQueue } from '../../shared/utils/consistent-queue';
 import { MouseSourceType } from '../use-mouse';
 import { ElementRef, inject } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
+import { WindowRef } from '../types';
 
 export interface UseMousePressedOptions {
   /**
@@ -33,7 +34,7 @@ export interface UseMousePressedOptions {
 }
 
 export interface MousePressedParams {
-  windowRef: (Window & typeof globalThis) | null;
+  windowRef: WindowRef;
   targetRef: HTMLElement | null;
 }
 

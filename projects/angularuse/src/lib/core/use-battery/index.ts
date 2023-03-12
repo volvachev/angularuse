@@ -2,6 +2,7 @@ import { concatMap, defer, from, fromEvent, iif, map, merge, Observable, of } fr
 import { inject, InjectionToken } from '@angular/core';
 import { DOCUMENT } from '@angular/common';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
+import { WindowRef } from '../types';
 
 export interface BatteryData {
   charging: boolean;
@@ -42,7 +43,7 @@ const getAllEventsFromBattery = (battery: BatteryManager): Observable<BatteryDat
   );
 
 export function useBattery(): Observable<BatteryData> {
-  const window: (Window & typeof globalThis) | null = inject(DOCUMENT).defaultView;
+  const window: WindowRef = inject(DOCUMENT).defaultView;
 
   if (!window) {
     return of(getDefaultBatteryInfo());

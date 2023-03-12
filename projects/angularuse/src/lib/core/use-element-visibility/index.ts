@@ -2,11 +2,12 @@ import { ElementRef, inject, InjectionToken } from '@angular/core';
 import { Observable } from 'rxjs';
 import { elementVisibility, UseElementVisibilityOptions } from './internal';
 import { DOCUMENT } from '@angular/common';
+import { WindowRef } from '../types';
 
 export function useElementVisibility(options: UseElementVisibilityOptions = {}): Observable<boolean> {
   const document: Document = inject(DOCUMENT);
   const element = inject(ElementRef).nativeElement as HTMLElement;
-  const window: (Window & typeof globalThis) | null = document.defaultView;
+  const window: WindowRef = document.defaultView;
 
   return elementVisibility(
     {
