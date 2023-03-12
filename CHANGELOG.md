@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.1.2](https://github.com/volvachev/angularuse/compare/v0.1.1...v0.1.2) (2023-03-12)
+
+
+### Features
+
+* add `useElementHover`, `usePageLeave`, `usePreferredColorScheme` functions ([6892355](https://github.com/volvachev/angularuse/commit/6892355339d0ea26d586656b04835630608c8787))
+
 ### [0.1.1](https://github.com/volvachev/angularuse/compare/v0.1.0...v0.1.1) (2023-02-25)
 
 
