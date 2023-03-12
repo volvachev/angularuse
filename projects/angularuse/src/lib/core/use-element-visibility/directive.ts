@@ -1,7 +1,9 @@
 import { AfterViewInit, Directive, EventEmitter, Input, Output } from '@angular/core';
 import { useUntilDestroy } from '../use-until-destroy';
 import { withZone } from '../../shared/utils/with-zone';
-import { _useElementVisibility, UseElementVisibilityOptions } from './internal';
+import { UseElementVisibilityOptions } from './internal';
+import { useRunInInjectContext } from '../../shared/utils/environment-injector';
+import { useElementVisibility } from '.';
 
 export interface UseElementVisibilitySettings {
   visibilitySettings?: UseElementVisibilityOptions;
@@ -13,9 +15,9 @@ export interface UseElementVisibilitySettings {
   standalone: true
 })
 export class UseElementVisibilityDirective implements AfterViewInit {
-  private readonly _useElementVisibility = _useElementVisibility();
   private readonly destroy = useUntilDestroy();
   private readonly zoneTrigger = withZone();
+  private readonly runInInjectContext = useRunInInjectContext();
 
   @Input()
   public useElementVisibilitySettings: UseElementVisibilitySettings = {
@@ -30,10 +32,12 @@ export class UseElementVisibilityDirective implements AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this._useElementVisibility(this.useElementVisibilitySettings?.visibilitySettings)
-      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
-      .subscribe((isElementVisible: boolean) => {
-        this.useElementVisibility.emit(isElementVisible);
-      });
+    this.runInInjectContext(() => {
+      useElementVisibility(this.useElementVisibilitySettings?.visibilitySettings)
+        .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
+        .subscribe((isElementVisible: boolean) => {
+          this.useElementVisibility.emit(isElementVisible);
+        });
+    });
   }
 }

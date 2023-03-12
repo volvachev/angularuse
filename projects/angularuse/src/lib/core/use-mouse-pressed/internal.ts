@@ -1,8 +1,6 @@
 import { of, merge, fromEvent, defer, iif, EMPTY, map, Observable } from 'rxjs';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
 import { MouseSourceType } from '../use-mouse';
-import { ElementRef, inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { WindowRef } from '../types';
 
 export interface UseMousePressedOptions {
@@ -107,17 +105,4 @@ export function mousePressed(
       touch$
     )
   );
-}
-
-/*
- * internal realisation for reuse inside directives
- */
-export function _useMousePressed() {
-  const element = inject(ElementRef, { optional: true });
-  const windowRef = inject(DOCUMENT).defaultView;
-
-  return (options: UseMousePressedOptions = {}): Observable<UseMousePressedReturn> => {
-    const targetRef = element?.nativeElement ?? windowRef;
-    return mousePressed({ windowRef, targetRef }, options);
-  };
 }

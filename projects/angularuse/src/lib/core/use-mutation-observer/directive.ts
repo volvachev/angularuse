@@ -1,7 +1,9 @@
 import { AfterViewInit, Directive, EventEmitter, Input, Output } from '@angular/core';
-import { _useMutationObserver, UseMutationObserverOptions } from './internal';
+import { UseMutationObserverOptions } from './internal';
 import { useUntilDestroy } from '../use-until-destroy';
 import { withZone } from '../../shared/utils/with-zone';
+import { useRunInInjectContext } from '../../shared/utils/environment-injector';
+import { useMutationObserver } from '.';
 
 export interface MutationObserverSettings {
   mutationSettings?: UseMutationObserverOptions;
@@ -13,9 +15,9 @@ export interface MutationObserverSettings {
   standalone: true
 })
 export class UseMutationObserverDirective implements AfterViewInit {
-  private readonly _useMutationObserver = _useMutationObserver();
   private readonly destroy = useUntilDestroy();
   private readonly zoneTrigger = withZone();
+  private readonly runInInjectContext = useRunInInjectContext();
 
   @Input()
   public useMutationObserverSettings: MutationObserverSettings = {
@@ -30,10 +32,12 @@ export class UseMutationObserverDirective implements AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this._useMutationObserver(this.useMutationObserverSettings.mutationSettings)
-      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
-      .subscribe((entry: MutationRecord[] | null) => {
-        this.useMutationObserver.emit(entry);
-      });
+    this.runInInjectContext(() => {
+      useMutationObserver(this.useMutationObserverSettings.mutationSettings)
+        .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
+        .subscribe((entry: MutationRecord[] | null) => {
+          this.useMutationObserver.emit(entry);
+        });
+    });
   }
 }

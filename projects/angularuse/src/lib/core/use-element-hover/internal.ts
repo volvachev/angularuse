@@ -1,6 +1,4 @@
 import { Observable, of, merge, fromEvent, map, debounce, timer, asyncScheduler, queueScheduler } from 'rxjs';
-import { ElementRef, inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { WindowRef } from '../types';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
 
@@ -34,16 +32,4 @@ export function elementHover(
       })
     )
   );
-}
-
-/*
- * internal realisation for reuse inside directives
- */
-export function _useElementHover() {
-  const element = inject(ElementRef).nativeElement as HTMLElement;
-  const windowRef = inject(DOCUMENT).defaultView;
-
-  return (options: UseElementHoverOptions = {}) => {
-    return elementHover(element, windowRef, options);
-  };
 }
