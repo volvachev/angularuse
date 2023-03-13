@@ -1,9 +1,6 @@
-import { ElementRef, inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
 import { defer, EMPTY, iif, map, Observable } from 'rxjs';
 import { isString } from '../../shared/utils/is-string';
-import { _useMutationObserver } from '../use-mutation-observer/internal';
 
 export type UseTextDirectionValue = 'ltr' | 'rtl' | 'auto';
 
@@ -13,7 +10,7 @@ export interface UseTextDirectionOptions {
    *
    * @default 'html'
    */
-  selector?: string | HTMLElement;
+  selector?: string | HTMLElement | 'self';
   /**
    * Observe `document.querySelector(selector)` changes using MutationObserve
    *
@@ -29,7 +26,7 @@ export interface UseTextDirectionOptions {
 }
 
 export function getSelector(documentRef: Document, selector: UseTextDirectionOptions['selector']): Element | null {
-  if (!selector) {
+  if (!selector || selector === 'self') {
     return null;
   }
 
@@ -42,7 +39,7 @@ export function getSelector(documentRef: Document, selector: UseTextDirectionOpt
 
 export function textDirection(
   document: Document,
-  mutatation$: Observable<MutationRecord[] | null>,
+  mutation$: Observable<MutationRecord[] | null>,
   options: UseTextDirectionOptions = {}
 ): Observable<UseTextDirectionValue> {
   const { selector = 'html', observe = false, initialValue = 'ltr' } = options;
@@ -53,28 +50,6 @@ export function textDirection(
 
   return consistentQueue(
     () => null,
-    defer(() => iif(() => Boolean(observe) && Boolean(document), mutatation$, EMPTY))
+    defer(() => iif(() => Boolean(observe) && Boolean(document), mutation$, EMPTY))
   ).pipe(map(() => getValue()));
-}
-
-/*
- * internal realisation for reuse inside directives
- */
-export function _useTextDirection() {
-  const document = inject(DOCUMENT);
-  const element = inject(ElementRef, { optional: true });
-  const mutation = _useMutationObserver();
-
-  return (options: UseTextDirectionOptions = {}, self?: boolean) => {
-    const selector = self && element ? element.nativeElement : options?.selector;
-    const mutation$ = mutation({
-      target: getSelector(document, selector) as HTMLElement,
-      attributes: true
-    });
-
-    return textDirection(document, mutation$, {
-      ...options,
-      selector
-    });
-  };
 }

@@ -1,8 +1,10 @@
 import { AfterViewInit, Directive, EventEmitter, Input, Output } from '@angular/core';
-import { _useIntersectionObserver, UseIntersectionObserverOptions } from './internal';
+import { UseIntersectionObserverOptions } from './internal';
 import { useUntilDestroy } from '../use-until-destroy';
 import { withZone } from '../../shared/utils/with-zone';
 import { mergeMap } from 'rxjs';
+import { useRunInInjectContext } from '../../shared/utils/environment-injector';
+import { useIntersectionObserver } from '.';
 
 export interface IntersectionObserverSettings {
   intersectionSettings?: UseIntersectionObserverOptions;
@@ -14,9 +16,9 @@ export interface IntersectionObserverSettings {
   standalone: true
 })
 export class UseIntersectionObserverDirective implements AfterViewInit {
-  private readonly _useIntersectionObserver = _useIntersectionObserver();
   private readonly destroy = useUntilDestroy();
   private readonly zoneTrigger = withZone();
+  private readonly runInInjectContext = useRunInInjectContext();
 
   @Input()
   public useIntersectionObserverSettings: IntersectionObserverSettings = {
@@ -31,14 +33,16 @@ export class UseIntersectionObserverDirective implements AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this._useIntersectionObserver(this.useIntersectionObserverSettings.intersectionSettings)
-      .pipe(
-        this.zoneTrigger(this.isInsideNgZone),
-        mergeMap((entry: IntersectionObserverEntry[]) => entry),
-        this.destroy()
-      )
-      .subscribe((entry: IntersectionObserverEntry) => {
-        this.useIntersectionObserver.emit(entry);
-      });
+    this.runInInjectContext(() => {
+      useIntersectionObserver(this.useIntersectionObserverSettings.intersectionSettings)
+        .pipe(
+          this.zoneTrigger(this.isInsideNgZone),
+          mergeMap((entry: IntersectionObserverEntry[]) => entry),
+          this.destroy()
+        )
+        .subscribe((entry: IntersectionObserverEntry) => {
+          this.useIntersectionObserver.emit(entry);
+        });
+    });
   }
 }

@@ -1,7 +1,9 @@
 import { AfterViewInit, Directive, EventEmitter, Input, Output } from '@angular/core';
-import { _useElementHover, UseElementHoverOptions } from './internal';
+import { UseElementHoverOptions } from './internal';
 import { useUntilDestroy } from '../use-until-destroy';
 import { withZone } from '../../shared/utils/with-zone';
+import { useRunInInjectContext } from '../../shared/utils/environment-injector';
+import { useElementHover } from '.';
 
 export interface UseElementHoverSettings {
   elementHoverOptions?: UseElementHoverOptions;
@@ -13,9 +15,9 @@ export interface UseElementHoverSettings {
   standalone: true
 })
 export class UseElementHoverDirective implements AfterViewInit {
-  private readonly _useElementHover = _useElementHover();
   private readonly destroy = useUntilDestroy();
   private readonly zoneTrigger = withZone();
+  private readonly runInInjectContext = useRunInInjectContext();
 
   @Input()
   public useElementHoverSettings: UseElementHoverSettings = {
@@ -30,10 +32,12 @@ export class UseElementHoverDirective implements AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this._useElementHover(this.useElementHoverSettings.elementHoverOptions)
-      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
-      .subscribe((isHovered: boolean) => {
-        this.useElementHover.emit(isHovered);
-      });
+    this.runInInjectContext(() => {
+      useElementHover(this.useElementHoverSettings.elementHoverOptions)
+        .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
+        .subscribe((isHovered: boolean) => {
+          this.useElementHover.emit(isHovered);
+        });
+    });
   }
 }

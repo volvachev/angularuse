@@ -1,6 +1,4 @@
 import { Observable, of, debounceTime as debounceTimeOperator } from 'rxjs';
-import { ElementRef, inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { WindowRef } from '../types';
 
 export interface UseIntersectionObserverOptions {
@@ -50,16 +48,4 @@ export function intersectionObserver(
       intersectionObserver.disconnect();
     };
   }).pipe(debounceTimeOperator(options?.debounceTime ?? 0));
-}
-
-/*
- * internal realisation for reuse inside directives
- */
-export function _useIntersectionObserver() {
-  const target = inject(ElementRef).nativeElement as HTMLElement;
-  const window: WindowRef = inject(DOCUMENT).defaultView;
-
-  return (options: UseIntersectionObserverOptions = {}): Observable<IntersectionObserverEntry[]> => {
-    return intersectionObserver(window, target, options);
-  };
 }

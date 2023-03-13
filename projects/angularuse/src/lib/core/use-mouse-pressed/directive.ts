@@ -1,7 +1,9 @@
 import { AfterViewInit, Directive, EventEmitter, Input, Output } from '@angular/core';
-import { _useMousePressed, UseMousePressedReturn, UseMousePressedOptions } from './internal';
+import { UseMousePressedReturn, UseMousePressedOptions } from './internal';
 import { useUntilDestroy } from '../use-until-destroy';
 import { withZone } from '../../shared/utils/with-zone';
+import { useRunInInjectContext } from '../../shared/utils/environment-injector';
+import { useMousePressed } from '.';
 
 export interface UseMousePressedSettings {
   mouseSettings?: UseMousePressedOptions;
@@ -13,9 +15,9 @@ export interface UseMousePressedSettings {
   standalone: true
 })
 export class UseMousePressedDirective implements AfterViewInit {
-  private readonly _useMousePressedFunction = _useMousePressed();
   private readonly destroy = useUntilDestroy();
   private readonly zoneTrigger = withZone();
+  private readonly runInInjectContext = useRunInInjectContext();
 
   @Input()
   public useMousePressedSettings: UseMousePressedSettings = {
@@ -30,10 +32,12 @@ export class UseMousePressedDirective implements AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this._useMousePressedFunction(this.useMousePressedSettings.mouseSettings)
-      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
-      .subscribe((entry: UseMousePressedReturn) => {
-        this.useMousePressed.emit(entry);
-      });
+    this.runInInjectContext(() => {
+      useMousePressed(this.useMousePressedSettings.mouseSettings)
+        .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
+        .subscribe((entry: UseMousePressedReturn) => {
+          this.useMousePressed.emit(entry);
+        });
+    });
   }
 }

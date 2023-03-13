@@ -1,7 +1,9 @@
 import { AfterViewInit, Directive, Input } from '@angular/core';
 import { useUntilDestroy } from '../use-until-destroy';
 import { withZone } from '../../shared/utils/with-zone';
-import { _useTextareaAutosize, UseTextareaAutosizeOptions } from './internal';
+import { UseTextareaAutosizeOptions } from './internal';
+import { useRunInInjectContext } from '../../shared/utils/environment-injector';
+import { useTextareaAutosize } from '.';
 
 export interface UseTextareaAutosizeSettings {
   textareaAutosizeSettings?: UseTextareaAutosizeOptions;
@@ -13,9 +15,9 @@ export interface UseTextareaAutosizeSettings {
   standalone: true
 })
 export class UseTextareaAutosizeDirective implements AfterViewInit {
-  private readonly _useTextareaAutosize = _useTextareaAutosize();
   private readonly destroy = useUntilDestroy();
   private readonly zoneTrigger = withZone();
+  private readonly runInInjectContext = useRunInInjectContext();
 
   @Input()
   public useTextareaAutosizeSettings: UseTextareaAutosizeSettings = {
@@ -27,8 +29,10 @@ export class UseTextareaAutosizeDirective implements AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this._useTextareaAutosize(this.useTextareaAutosizeSettings.textareaAutosizeSettings)
-      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
-      .subscribe();
+    this.runInInjectContext(() => {
+      useTextareaAutosize(this.useTextareaAutosizeSettings.textareaAutosizeSettings)
+        .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
+        .subscribe();
+    });
   }
 }

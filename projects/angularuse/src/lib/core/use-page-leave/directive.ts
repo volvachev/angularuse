@@ -1,7 +1,8 @@
 import { AfterViewInit, Directive, EventEmitter, Input, Output } from '@angular/core';
-import { _usePageLeave } from './internal';
 import { useUntilDestroy } from '../use-until-destroy';
 import { withZone } from '../../shared/utils/with-zone';
+import { useRunInInjectContext } from '../../shared/utils/environment-injector';
+import { usePageLeave } from '.';
 
 export interface UsePageLeaveSettings {
   insideNgZone?: boolean;
@@ -12,9 +13,9 @@ export interface UsePageLeaveSettings {
   standalone: true
 })
 export class UsePageLeaveDirective implements AfterViewInit {
-  private readonly _usePageLeave = _usePageLeave();
   private readonly destroy = useUntilDestroy();
   private readonly zoneTrigger = withZone();
+  private readonly runInInjectContext = useRunInInjectContext();
 
   @Input()
   public usePageLeaveSettings: UsePageLeaveSettings = {
@@ -29,10 +30,12 @@ export class UsePageLeaveDirective implements AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this._usePageLeave()
-      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
-      .subscribe((isLeave: boolean) => {
-        this.usePageLeave.emit(isLeave);
-      });
+    this.runInInjectContext(() => {
+      usePageLeave()
+        .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
+        .subscribe((isLeave: boolean) => {
+          this.usePageLeave.emit(isLeave);
+        });
+    });
   }
 }

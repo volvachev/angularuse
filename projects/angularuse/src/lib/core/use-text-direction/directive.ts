@@ -1,32 +1,32 @@
 import { AfterViewInit, Directive, EventEmitter, Input, Output } from '@angular/core';
-import { _useTextDirection, UseTextDirectionOptions, UseTextDirectionValue } from './internal';
+import { UseTextDirectionOptions, UseTextDirectionValue } from './internal';
 import { useUntilDestroy } from '../use-until-destroy';
-
-export interface UseTextDirectionSettings extends UseTextDirectionOptions {
-  self: boolean;
-}
+import { useRunInInjectContext } from '../../shared/utils/environment-injector';
+import { useTextDirection } from '.';
 
 @Directive({
   selector: '[useTextDirection]',
   standalone: true
 })
 export class UseTextDirectionDirective implements AfterViewInit {
-  private readonly _useTextDirection = _useTextDirection();
+  private readonly runInInjectContext = useRunInInjectContext();
   private readonly destroy = useUntilDestroy();
 
   @Input()
-  public useTextDirectionSettings: UseTextDirectionSettings = {
-    self: true
+  public useTextDirectionSettings: UseTextDirectionOptions = {
+    selector: 'self'
   };
 
   @Output()
   public useTextDirection = new EventEmitter<UseTextDirectionValue>();
 
   public ngAfterViewInit(): void {
-    this._useTextDirection(this.useTextDirectionSettings, this.useTextDirectionSettings.self)
-      .pipe(this.destroy())
-      .subscribe((textDirection: UseTextDirectionValue) => {
-        this.useTextDirection.emit(textDirection);
-      });
+    this.runInInjectContext(() => {
+      useTextDirection(this.useTextDirectionSettings)
+        .pipe(this.destroy())
+        .subscribe((textDirection: UseTextDirectionValue) => {
+          this.useTextDirection.emit(textDirection);
+        });
+    });
   }
 }

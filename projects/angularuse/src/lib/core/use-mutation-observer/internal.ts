@@ -1,7 +1,4 @@
-import { ElementRef, inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
-import { Observable, of } from 'rxjs';
-import { debounceTime as debounceTimeOperator } from 'rxjs/internal/operators/debounceTime';
+import { Observable, of, debounceTime as debounceTimeOperator } from 'rxjs';
 import { WindowRef } from '../types';
 
 export interface UseMutationObserverOptions extends MutationObserverInit {
@@ -29,16 +26,4 @@ export function mutationObserver(
       mutationObserver.disconnect();
     };
   }).pipe(debounceTimeOperator(options?.debounceTime ?? 0));
-}
-
-/*
- * internal realisation for reuse inside directives
- */
-export function _useMutationObserver() {
-  const target = inject(ElementRef).nativeElement;
-  const windowRef = inject(DOCUMENT)?.defaultView;
-
-  return (options: UseMutationObserverOptions = {}): Observable<MutationRecord[] | null> => {
-    return mutationObserver(options?.target ?? target, windowRef, options);
-  };
 }

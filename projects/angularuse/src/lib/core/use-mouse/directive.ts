@@ -1,7 +1,9 @@
 import { AfterViewInit, Directive, EventEmitter, Input, Output } from '@angular/core';
-import { _useMouse, UseMouseOptions, UseMouseReturn } from './internal';
+import { UseMouseOptions, UseMouseReturn } from './internal';
 import { useUntilDestroy } from '../use-until-destroy';
 import { withZone } from '../../shared/utils/with-zone';
+import { useRunInInjectContext } from '../../shared/utils/environment-injector';
+import { useMouse } from '.';
 
 export interface UseMouseSettings {
   mouseSettings?: UseMouseOptions;
@@ -13,9 +15,9 @@ export interface UseMouseSettings {
   standalone: true
 })
 export class UseMouseDirective implements AfterViewInit {
-  private readonly _useMouseFunction = _useMouse();
   private readonly destroy = useUntilDestroy();
   private readonly zoneTrigger = withZone();
+  private readonly runInInjectContext = useRunInInjectContext();
 
   @Input()
   public useMouseSettings: UseMouseSettings = {
@@ -30,10 +32,12 @@ export class UseMouseDirective implements AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this._useMouseFunction(this.useMouseSettings.mouseSettings)
-      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
-      .subscribe((entry: UseMouseReturn) => {
-        this.useMouse.emit(entry);
-      });
+    this.runInInjectContext(() => {
+      useMouse(this.useMouseSettings.mouseSettings)
+        .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
+        .subscribe((entry: UseMouseReturn) => {
+          this.useMouse.emit(entry);
+        });
+    });
   }
 }

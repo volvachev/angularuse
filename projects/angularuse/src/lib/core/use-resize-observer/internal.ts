@@ -1,9 +1,7 @@
 import { debounceTime as debounceTimeOperator, filter, finalize, map, Observable, of, Subject } from 'rxjs';
-import { ElementRef, inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { WindowRef } from '../types';
 
-type UseResizeObserverFunction = (options?: UseResizeObserverOptions) => Observable<ResizeObserverEntry[]>;
+export type UseResizeObserverFunction = (options?: UseResizeObserverOptions) => Observable<ResizeObserverEntry[]>;
 
 export interface UseResizeObserverOptions {
   resizeObserverOptions?: ResizeObserverOptions;
@@ -46,16 +44,4 @@ export function resizeObserver(
       internalResizeObserver.unobserve(target);
     })
   );
-}
-
-/*
- * internal realisation for reuse inside directives
- */
-export function _useResizeObserver(): UseResizeObserverFunction {
-  const target = inject(ElementRef).nativeElement as HTMLElement;
-  const windowRef: WindowRef = inject(DOCUMENT).defaultView;
-
-  return function useResizeObserver(options: UseResizeObserverOptions = {}): Observable<ResizeObserverEntry[]> {
-    return resizeObserver(windowRef, target, options);
-  };
 }

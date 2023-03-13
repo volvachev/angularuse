@@ -1,9 +1,9 @@
 import { AfterViewInit, Directive, EventEmitter, Input, Output } from '@angular/core';
-import { _useElementSize } from './internal';
 import { useUntilDestroy } from '../use-until-destroy';
-import { ElementSize } from './index';
+import { ElementSize, useElementSize } from '.';
 import { withZone } from '../../shared/utils/with-zone';
 import { UseResizeObserverOptions } from '../use-resize-observer';
+import { useRunInInjectContext } from '../../shared/utils/environment-injector';
 
 export interface ElementSizeSettings {
   resizeSettings?: UseResizeObserverOptions;
@@ -21,9 +21,9 @@ const getDefaultSize = (): ElementSize => ({
   standalone: true
 })
 export class UseElementSizeDirective implements AfterViewInit {
-  private readonly _useElementSize = _useElementSize();
   private readonly destroy = useUntilDestroy();
   private readonly zoneTrigger = withZone();
+  private readonly runInInjectContext = useRunInInjectContext();
 
   @Input()
   public useElementSizeSettings: ElementSizeSettings = {
@@ -43,10 +43,12 @@ export class UseElementSizeDirective implements AfterViewInit {
   }
 
   public ngAfterViewInit(): void {
-    this._useElementSize(this.initialSize, this.useElementSizeSettings.resizeSettings)
-      .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
-      .subscribe((elementSize: ElementSize) => {
-        this.useElementSize.emit(elementSize);
-      });
+    this.runInInjectContext(() => {
+      useElementSize(this.initialSize, this.useElementSizeSettings.resizeSettings)
+        .pipe(this.zoneTrigger(this.isInsideNgZone), this.destroy())
+        .subscribe((elementSize: ElementSize) => {
+          this.useElementSize.emit(elementSize);
+        });
+    });
   }
 }

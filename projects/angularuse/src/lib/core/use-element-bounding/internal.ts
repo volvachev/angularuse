@@ -1,9 +1,6 @@
 import { debounceTime, defer, EMPTY, fromEvent, iif, map, merge, Observable } from 'rxjs';
-import { ElementRef, inject } from '@angular/core';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
-import { _useResizeObserver, UseResizeObserverOptions } from '../use-resize-observer/internal';
-
-type UseElementBoundingFunction = (options?: UseElementBoundingOptions) => Observable<UseElementBounding>;
+import { UseResizeObserverFunction, UseResizeObserverOptions } from '../use-resize-observer/internal';
 
 export interface UseElementBoundingOptions {
   /**
@@ -59,7 +56,7 @@ function update(element: HTMLElement): UseElementBounding {
 
 export function elementBounding(
   element: HTMLElement,
-  useResizeObserver: ReturnType<typeof _useResizeObserver>,
+  useResizeObserver: UseResizeObserverFunction,
   options: UseElementBoundingOptions = {}
 ): Observable<UseElementBounding> {
   const {
@@ -87,15 +84,4 @@ export function elementBounding(
   return consistentQueue(() => null, merge(resizeStream$, windowScroll$, windowResize$)).pipe(
     map(() => update(element))
   );
-}
-
-/*
- * internal realisation for reuse inside directives
- */
-export function _useElementBounding(): UseElementBoundingFunction {
-  const element = inject(ElementRef).nativeElement as HTMLElement;
-  const useResizeObserver = _useResizeObserver();
-
-  return (options: UseElementBoundingOptions = {}): Observable<UseElementBounding> =>
-    elementBounding(element, useResizeObserver, options);
 }

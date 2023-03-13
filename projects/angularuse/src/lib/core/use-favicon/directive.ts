@@ -1,7 +1,9 @@
 import { AfterViewInit, Directive, Input } from '@angular/core';
 import { useUntilDestroy } from '../use-until-destroy';
 import { Subject } from 'rxjs';
-import { _useFavicon, IconType, UseFaviconOptions } from './internal';
+import { IconType, UseFaviconOptions } from './internal';
+import { useRunInInjectContext } from '../../shared/utils/environment-injector';
+import { useFavicon } from '.';
 
 @Directive({
   selector: '[useFavicon]',
@@ -17,12 +19,12 @@ export class UseFaviconDirective implements AfterViewInit {
   public useFaviconSettings!: UseFaviconOptions;
 
   private readonly faviconStream = new Subject<IconType>();
-  private readonly useFaviconFunction = _useFavicon();
+  private readonly runInInjectContext = useRunInInjectContext();
   private readonly destroy = useUntilDestroy();
 
   public ngAfterViewInit(): void {
-    this.useFaviconFunction(this.faviconStream.asObservable(), this.useFaviconSettings)
-      .pipe(this.destroy())
-      .subscribe();
+    this.runInInjectContext(() => {
+      useFavicon(this.faviconStream.asObservable(), this.useFaviconSettings).pipe(this.destroy()).subscribe();
+    });
   }
 }

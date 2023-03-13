@@ -1,8 +1,8 @@
 import { Position, WindowRef } from '../types';
-import { inject } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
 import { of, merge, fromEvent, iif, defer, EMPTY, map, filter, Observable } from 'rxjs';
 import { consistentQueue } from '../../shared/utils/consistent-queue';
+
+export type UseMouseFunction = (options?: UseMouseOptions) => Observable<UseMouseReturn>;
 
 export interface UseMouseOptions {
   /**
@@ -116,15 +116,4 @@ export function useMouseInternal(windowRef: WindowRef, options: UseMouseOptions 
   ).pipe(map(event => mouseHandler(type, event)));
 
   return consistentQueue(reset, merge(mouseEvents$, touchEvents$).pipe(filter(Boolean)));
-}
-
-/*
- * internal realisation for reuse inside directives
- */
-export function _useMouse() {
-  const windowRef = inject(DOCUMENT).defaultView;
-
-  return (options: UseMouseOptions = {}): Observable<UseMouseReturn> => {
-    return useMouseInternal(windowRef, options);
-  };
 }
