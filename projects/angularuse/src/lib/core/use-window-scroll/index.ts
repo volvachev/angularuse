@@ -30,3 +30,5 @@ export function useWindowScroll(): Observable<Position> {
 export const WINDOW_SCROLL = new InjectionToken<Observable<Position>>('Reactive window scroll', {
   factory: useWindowScroll
 });
+
+export { Position } from '../types';

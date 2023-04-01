@@ -28,3 +28,64 @@ export class ExampleComponent {
 <div> isLargeScreen {{ isLargeScreen$ | async }}</div>
 <div> prefersDark {{ isPreferredDark$ | async }}</div>
 ```
+
+### Directive example
+
+Emits `boolean` when media query matched.
+
+```ts
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { UseMediaQueryDirective } from '@volvachev/angularuse';
+
+@Component({
+  selector: 'app-example',
+  template: `
+     <div style="width: 300px;height: 300px;border: 1px solid black;" (useMediaQuery)="handler($event)">test</div>
+  `,
+  styles: [':host {display: flex; max-width: 310px; height: 310px; background: aquamarine;}'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [UseMediaQueryDirective],
+})
+export class ExampleComponent {
+  public handler(event: boolean): void {
+    console.log(event);
+  }
+}
+```
+
+### Host directive example
+
+Emits `boolean` when media query matched.
+
+```ts
+import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
+import { UseMediaQueryDirective } from '@volvachev/angularuse';
+
+@Component({
+  selector: 'app-example',
+  template: `
+      <div style="width: 300px;height: 300px;border: 1px solid black;">example</div>
+  `,
+  styles: [':host {display: flex; max-width: 310px; height: 310px; background: aquamarine;}'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  hostDirectives: [
+    {
+      directive: UseMediaQueryDirective,
+      inputs: ['useMediaQuerySettings'],
+      outputs: ['useMediaQuery'],
+    }
+  ]
+})
+export class ExampleComponent {
+  @HostListener('useMediaQuerySettings', ['$event'])
+  public listenUseMediaQuery(event: boolean) {
+    console.log(event);
+  }
+}
+```
+
+```html
+<app-example [useMediaQuerySettings]="{insideNgZone: false}" (useMediaQuery)="listenUseMediaQuery($event)"></app-example>
+```

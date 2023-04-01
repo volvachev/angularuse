@@ -36,3 +36,65 @@ export class ExampleComponent {
 | chargingTime    | `Number`  | The number of seconds until the device becomes fully charged.     |
 | dischargingTime | `Number`  | The number of seconds before the device becomes fully discharged. |
 | level           | `Number`  | A number between 0 and 1 representing the current charge level.   |
+
+
+### Directive example
+
+Emits `BatteryData` when status of battery changed via Battery Status API.
+
+```ts
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { UseBatteryDirective, BatteryData } from '@volvachev/angularuse';
+
+@Component({
+  selector: 'app-example',
+  template: `
+     <div style="width: 300px;height: 300px;border: 1px solid black;" (useBattery)="handler($event)">test</div>
+  `,
+  styles: [':host {display: flex; max-width: 310px; height: 310px; background: aquamarine;}'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [UseBatteryDirective],
+})
+export class ExampleComponent {
+  public handler(event: BatteryData): void {
+    console.log(event);
+  }
+}
+```
+
+### Host directive example
+
+Emits `BatteryData` when status of battery changed via Battery Status API.
+
+```ts
+import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
+import { UseBatteryDirective, BatteryData } from '@volvachev/angularuse';
+
+@Component({
+  selector: 'app-example',
+  template: `
+      <div style="width: 300px;height: 300px;border: 1px solid black;">example</div>
+  `,
+  styles: [':host {display: flex; max-width: 310px; height: 310px; background: aquamarine;}'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  hostDirectives: [
+    {
+      directive: UseBatteryDirective,
+      inputs: ['useBatterySettings'],
+      outputs: ['useBattery'],
+    }
+  ]
+})
+export class ExampleComponent {
+  @HostListener('useBattery', ['$event'])
+  public listenUseBattery(event: BatteryData) {
+    console.log(event);
+  }
+}
+```
+
+```html
+<app-example [useBatterySettings]="{insideNgZone: false}" (useBattery)="listenUseBattery($event)"></app-example>
+```
