@@ -41,3 +41,64 @@ export class ExampleComponent {
 	<div> memoryInfoFromDI$ jsHeapSizeLimit {{ size(memory.jsHeapSizeLimit) }}</div>
 </ng-container>
 ```
+
+### Directive example
+
+Emits every seconds information about memory. type: `MemoryInfo` or `null`.
+
+```ts
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { UseMemoryDirective, MemoryInfo } from '@volvachev/angularuse';
+
+@Component({
+  selector: 'app-example',
+  template: `
+     <div style="width: 300px;height: 300px;border: 1px solid black;" (useMemory)="handler($event)">test</div>
+  `,
+  styles: [':host {display: flex; max-width: 310px; height: 310px; background: aquamarine;}'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  imports: [UseMemoryDirective],
+})
+export class ExampleComponent {
+  public handler(event: MemoryInfo | null): void {
+    console.log(event);
+  }
+}
+```
+
+### Host directive example
+
+Emits every seconds information about memory. type: `MemoryInfo` or `null`.
+
+```ts
+import { ChangeDetectionStrategy, Component, HostListener } from '@angular/core';
+import { UseMemoryDirective, MemoryInfo } from '@volvachev/angularuse';
+
+@Component({
+  selector: 'app-example',
+  template: `
+      <div style="width: 300px;height: 300px;border: 1px solid black;">example</div>
+  `,
+  styles: [':host {display: flex; max-width: 310px; height: 310px; background: aquamarine;}'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: true,
+  hostDirectives: [
+    {
+      directive: UseMemoryDirective,
+      inputs: ['useMemorySettings'],
+      outputs: ['useMemory'],
+    }
+  ]
+})
+export class ExampleComponent {
+  @HostListener('useMemory', ['$event'])
+  public listenUseMemory(event: MemoryInfo | null) {
+    console.log(event);
+  }
+}
+```
+
+```html
+<app-example [useMemorySettings]="{insideNgZone: false}" (useMemory)="listenUseMemory($event)"></app-example>
+```
