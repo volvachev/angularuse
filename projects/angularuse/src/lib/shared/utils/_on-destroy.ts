@@ -1,13 +1,11 @@
-import { ChangeDetectorRef, inject, ViewRef } from '@angular/core';
+import { DestroyRef, inject } from '@angular/core';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
-export function _useOnDestroy(): (cb: Function) => void {
-  const viewRef = inject(ChangeDetectorRef) as ViewRef;
+export type DestroyCallback = (cb: VoidFunction) => VoidFunction;
 
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  return (cb: Function): void => {
-    queueMicrotask(() => {
-      viewRef.onDestroy(cb);
-    });
+export function _useOnDestroy(): DestroyCallback {
+  const destroyRef = inject(DestroyRef);
+
+  return (cb: VoidFunction): VoidFunction => {
+    return destroyRef.onDestroy(cb);
   };
 }

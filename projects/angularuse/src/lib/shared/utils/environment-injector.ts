@@ -1,9 +1,8 @@
-import { createEnvironmentInjector, EnvironmentInjector, inject, Injector } from '@angular/core';
+import { EnvironmentInjector, Injector, runInInjectionContext } from '@angular/core';
 import { _useOnDestroy } from './_on-destroy';
 
-// TODO: use `runInInjectionContext` in v16 angular
 export const useEnvironmentInjector = (): EnvironmentInjector => {
-  const injector = createEnvironmentInjector([], inject(Injector) as EnvironmentInjector);
+  const injector = Injector.create({ providers: [] }) as EnvironmentInjector;
   const destroy = _useOnDestroy();
 
   destroy(() => {
@@ -17,6 +16,6 @@ export const useRunInInjectContext = (): (<ReturnT>(fn: () => ReturnT) => Return
   const injector = useEnvironmentInjector();
 
   return <ReturnT>(fn: () => ReturnT): ReturnT => {
-    return injector.runInContext(fn);
+    return runInInjectionContext(injector, fn);
   };
 };

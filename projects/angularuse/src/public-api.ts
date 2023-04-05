@@ -35,6 +35,8 @@ export * from './lib/core/use-mouse-pressed';
 export * from './lib/core/use-element-hover';
 export * from './lib/core/use-page-leave';
 export * from './lib/core/use-preferred-color-scheme';
+export * from './lib/core/use-broadcast-channel';
+export * from './lib/core/use-perfomance-observer';
 
 // Directives
 export * from './lib/core/use-window-focus/directive';
